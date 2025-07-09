@@ -5,4 +5,8 @@
 
 #include "framework.h"
 
+#include <vector>
+#include <iostream>
+#include <functional>
+
 #endif 
