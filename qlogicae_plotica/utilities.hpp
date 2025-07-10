@@ -4,31 +4,45 @@
 
 namespace QLogicaePlotica
 {
-	static constexpr std::string DEFAULT_ROOT_OUTPUT_FOLDER = ".plotica";
-
-	struct BenchmarkerSuspect
+	static constexpr std::string DEFAULT_COMPANY_ROOT_OUTPUT_FOLDER = ".qlogicae";
+	static constexpr std::string DEFAULT_PROJECT_ROOT_OUTPUT_FOLDER = "plotica";
+	
+	struct BenchmarkerSuspectData
 	{
 		std::string name;
 		std::function<void()> callback;
 	};
 
-	struct BenchmarkerOptions
+	struct BenchmarkerExecutionData
 	{
+		std::string name;
 		bool is_gui_output_enabled = true;
 		bool is_csv_output_enabled = false;
 		bool is_json_output_enabled = false;
 		uint64_t starting_iteration_count = 1;
 		uint64_t incremental_iteration_count = 1;
 		uint64_t ending_iteration_count = 1000;
-		std::vector<BenchmarkerSuspect> suspects = {};
+		std::vector<BenchmarkerSuspectData> suspects = {};
 	};
 
 	class RuntimePerformanceBenchmarker
 	{
+	public:
+		bool execute(const BenchmarkerExecutionData& data);
+		std::future<bool> execute_async(const BenchmarkerExecutionData& data);
 
+		static RuntimePerformanceBenchmarker& get_instance();
+
+	private:
+		RuntimePerformanceBenchmarker() = default;
+		~RuntimePerformanceBenchmarker() = default;
+		RuntimePerformanceBenchmarker(const RuntimePerformanceBenchmarker&) = delete;
+		RuntimePerformanceBenchmarker(RuntimePerformanceBenchmarker&&) noexcept = default;
+		RuntimePerformanceBenchmarker& operator=(const RuntimePerformanceBenchmarker&) = delete;
+		RuntimePerformanceBenchmarker& operator=(RuntimePerformanceBenchmarker&&) noexcept = default;
+
+		mutable std::mutex _mutex;
 	};
-
-
 }
 
 
@@ -41,7 +55,7 @@ execute(settings)
 output
 - graphs
 - filename
-	- .plotica/[title]/[id]-[date].[.csv/.json]
+	- .qlogicae/.plotica/[date]-[title]-[id]/data.[.csv/.json]
 - csv
 	- iteration_count,...[function_name]
 - json
