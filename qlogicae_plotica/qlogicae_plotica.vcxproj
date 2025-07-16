@@ -128,8 +128,8 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
     <Lib>
-      <AdditionalDependencies>qlogicae_core.lib</AdditionalDependencies>
-      <AdditionalLibraryDirectories>../../qlogicae_core/$(IntDir)qlogicae_core;%(AdditionalDependencies)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>gdi32.lib;qlogicae_core.lib</AdditionalDependencies>
+      <AdditionalLibraryDirectories>../$(IntDir)qlogicae_core;%(AdditionalDependencies)</AdditionalLibraryDirectories>
     </Lib>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -154,8 +154,8 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
     <Lib>
-      <AdditionalDependencies>qlogicae_core.lib</AdditionalDependencies>
-      <AdditionalLibraryDirectories>../../qlogicae_core/$(IntDir)qlogicae_core;%(AdditionalDependencies)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>gdi32.lib;qlogicae_core.lib</AdditionalDependencies>
+      <AdditionalLibraryDirectories>../$(IntDir)qlogicae_core;%(AdditionalDependencies)</AdditionalLibraryDirectories>
     </Lib>
   </ItemDefinitionGroup>
   <ItemGroup>

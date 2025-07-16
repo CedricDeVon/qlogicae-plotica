@@ -26,10 +26,8 @@
 #include <iostream>
 #include <typeindex>
 #include <optional>
-#include <windows.h>
 #include <algorithm>
 #include <functional>
-#include <shellapi.h>
 #include <filesystem>
 #include <type_traits>
 #include <string_view>
