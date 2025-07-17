@@ -64,9 +64,9 @@ namespace QLogicaePlotica
     RuntimePerformanceBenchmarker& RuntimePerformanceBenchmarker::
         get_instance()
     {
-        static RuntimePerformanceBenchmarker instance;
+        static RuntimePerformanceBenchmarker get_instance;
 
-        return instance;
+        return get_instance;
     }
 
     std::vector<size_t> RuntimePerformanceBenchmarker::

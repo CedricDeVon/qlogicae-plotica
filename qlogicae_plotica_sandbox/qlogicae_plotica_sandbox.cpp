@@ -76,7 +76,7 @@ int main()
                     {
                         std::vector<double> items(data.get_input_size());
 
-                        auto& generator = QLogicaeCore::Generator::instance();
+                        auto& generator = QLogicaeCore::Generator::get_instance();
                         std::generate(items.begin(), items.end(), [&]
                             {
                                 return generator.random_double(0.0, 100.0);
@@ -98,7 +98,7 @@ int main()
                     {
                         std::vector<double> items(data.get_input_size());
 
-                        auto& generator = QLogicaeCore::Generator::instance();
+                        auto& generator = QLogicaeCore::Generator::get_instance();
                         std::generate(items.begin(), items.end(), [&]
                             {
                                 return generator.random_double(0.0, 100.0);
@@ -120,7 +120,7 @@ int main()
                     {
                         std::vector<double> items(data.get_input_size());
 
-                        auto& generator = QLogicaeCore::Generator::instance();
+                        auto& generator = QLogicaeCore::Generator::get_instance();
                         std::generate(items.begin(), items.end(), [&]
                             {
                                 return generator.random_double(0.0, 100.0);

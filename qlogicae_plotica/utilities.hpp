@@ -21,6 +21,6 @@ namespace QLogicaePlotica
         DEFAULT_COMPANY_ROOT_OUTPUT_FOLDER + "/" + DEFAULT_PROJECT_ROOT_OUTPUT_FOLDER;
     static QLogicaeCore::ThreadPool& THREAD_POOL =
         QLogicaeCore::ThreadPool::get_instance();
-    static QLogicaeCore::Time& TIME = QLogicaeCore::Time::instance();
-    static QLogicaeCore::Generator& GENERATOR = QLogicaeCore::Generator::instance();
+    static QLogicaeCore::Time& TIME = QLogicaeCore::Time::get_instance();
+    static QLogicaeCore::Generator& GENERATOR = QLogicaeCore::Generator::get_instance();
 }
