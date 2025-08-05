@@ -48,6 +48,9 @@
 #include <unordered_set>
 #include <condition_variable>
 
+#include <absl/strings/str_cat.h>
+#include <absl/strings/str_join.h>
+
 #pragma warning(push)
 #pragma warning(disable : 4267 4244)
 #include <indicators/progress_bar.hpp>

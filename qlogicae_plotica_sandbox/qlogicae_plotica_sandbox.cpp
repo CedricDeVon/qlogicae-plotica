@@ -62,12 +62,16 @@ int main()
     benchmarker.execute(
         {
             .title = "Sorting Algorithms",
-            .starting_input_count = 100,
-            .incremental_input_count = 100,
-            .ending_input_count = 2000,
+            .starting_input_count = 1,
+            .incremental_input_count = 1,
+            .ending_input_count = 10000,
             .input_retry_count = 1,
             .warmup_iterations = 0,
             .maximum_output_count = 10000,
+            .y_axis_time_scale_unit =
+                QLogicaeCore::TimeScaleUnit::SECONDS,
+            .is_csv_output_enabled = true,
+            .is_jpg_output_enabled = true,      
             .suspects =
             {
                 {
@@ -87,9 +91,9 @@ int main()
                     },
                     .on_execution = [](QLogicaePlotica::BenchmarkerResultData& data)
                     {
-                        data.set_start_time();
+                        data.set_start_execution_time();
                         bubble_sort(data.get_payload<std::vector<double>>());
-                        data.set_end_time();
+                        data.set_end_execution_time();
                     },
                 },
                 {
@@ -109,9 +113,9 @@ int main()
                     },
                     .on_execution = [](QLogicaePlotica::BenchmarkerResultData& data)
                     {
-                        data.set_start_time();
+                        data.set_start_execution_time();
                         selection_sort(data.get_payload<std::vector<double>>());
-                        data.set_end_time();
+                        data.set_end_execution_time();
                     }
                 },
                 {
@@ -131,13 +135,12 @@ int main()
                     },
                     .on_execution = [](QLogicaePlotica::BenchmarkerResultData& data)
                     {
-                        data.set_start_time();
+                        data.set_start_execution_time();
                         insertion_sort(data.get_payload<std::vector<double>>());
-                        data.set_end_time();
+                        data.set_end_execution_time();
                     }
                 },
-            },
-            .is_jpg_output_enabled = true
+            }            
         }
     );
 
