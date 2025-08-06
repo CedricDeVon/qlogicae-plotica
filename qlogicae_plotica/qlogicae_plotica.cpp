@@ -212,6 +212,7 @@ namespace QLogicaePlotica
             std::atomic<size_t> completed_tasks = 0;
             size_t index_a, index_b, index_c, index_d;
             std::vector<size_t> full_input_sizes, downsample_indices;
+            std::vector<std::future<void>> output_futures;
             std::vector<std::tuple<size_t, size_t, std::future<void>>>
                 scheduled_tasks;
 
@@ -321,43 +322,46 @@ namespace QLogicaePlotica
                 future.get();
             }
 
-            auto matplot_figure = matplot::figure();
             if (execution_data_is_gui_output_enabled)
             {
-                std::vector<std::string> line_colors;
-                if (execution_data_is_line_color_set_to_default)
+                std::future<void> execution_data_is_gui_output_future = 
+                    std::async(std::launch::async, [=]() mutable
                 {
-                    line_colors = DEFAULT_GUI_LINE_COLORS;
-                }
-                else
-                {
-                    for (const auto& suspect : execution_data.suspects)
+                    std::vector<std::string> line_colors;
+                    if (execution_data_is_line_color_set_to_default)
                     {
-                        line_colors.push_back(suspect.line_color);
+                        line_colors = DEFAULT_GUI_LINE_COLORS;
                     }
-                }
+                    else
+                    {
+                        for (const auto& suspect : execution_data.suspects)
+                        {
+                            line_colors.push_back(suspect.line_color);
+                        }
+                    }
 
-                matplot::gcf()->name(execution_data_title);
-                matplot::colororder(line_colors);
-                matplot::plot(result.input_sizes, result.durations);
-                matplot::legend_handle legends = matplot::legend(
-                    result.suspect_names);
-                legends->location(
-                    _get_benchmark_legend_alignment(
-                        execution_data_legend_alignment
-                    )
-                );
-                legends->box(false);
-                matplot::grid(true);
-                matplot::gca()->minor_grid(true);
-                matplot::title(execution_data_title);
-                matplot::xlabel(execution_data_x_title);
-                matplot::ylabel(execution_data_y_title +
-                    " In " + TIME.get_time_unit_full_name(
-                        execution_data_y_axis_time_scale_unit
-                    ).data()
-                );
-                matplot::show();
+                    matplot::gcf()->name(execution_data_title);
+                    matplot::colororder(line_colors);
+                    matplot::plot(result.input_sizes, result.durations);
+                    matplot::legend_handle legends = matplot::legend(
+                        result.suspect_names);
+                    legends->location(
+                        _get_benchmark_legend_alignment(
+                            execution_data_legend_alignment
+                        )
+                    );
+                    legends->box(false);
+                    matplot::grid(true);
+                    matplot::gca()->minor_grid(true);
+                    matplot::title(execution_data_title);
+                    matplot::xlabel(execution_data_x_title);
+                    matplot::ylabel(execution_data_y_title +
+                        " In " + TIME.get_time_unit_full_name(
+                            execution_data_y_axis_time_scale_unit
+                        ).data()
+                    );
+                    matplot::show();
+                });
             }
 
             if (execution_data_is_file_output_enabled)
@@ -388,45 +392,70 @@ namespace QLogicaePlotica
                 {
                     if (is_enabled)
                     {
-                        matplot::save(
-                            _generate_matplot_output_file(
-                                current_file_path,
-                                file_name
-                            )
+                        output_futures.emplace_back(
+                            std::async(std::launch::async, [=]()
+                            {
+                                matplot::save(
+                                    _generate_matplot_output_file(
+                                        current_file_path,
+                                        file_name
+                                    )
+                                );
+                            })
                         );
                     }
                 }
 
                 if (execution_data_is_csv_output_enabled)
                 {
-                    CSV_FILE_IO.set_file_path(
-                        _generate_matplot_output_file(
-                            current_file_path, "csv"
-                        )
-                    );
-
-                    std::string output = "Input Size";
-                    for (const std::string suspect_name : result.suspect_names)
-                    {
-                        output += "," + suspect_name;
-                    }
-                    output += "\n";
-
-                    size_t result_input_size = result.input_sizes.size(),
-                        result_suspect_size = result.suspect_names.size(),
-                        result_suspect_row_size = result_suspect_size + 1;
-                    for (index_a = 0; index_a < result_input_size; ++index_a)
-                    {
-                        output += absl::StrCat(result.input_sizes[index_a]);
-                        for (index_b = 0;
-                            index_b < result_suspect_size;
-                            ++index_b)
+                    output_futures.emplace_back(
+                        std::async(std::launch::async, [=]() mutable
                         {
-                            output += absl::StrCat(",", result.durations[index_b][index_a]);
-                        }
-                        output += "\n";
-                    }
-                    CSV_FILE_IO.write_async(output);
+                            CSV_FILE_IO.set_file_path(
+                                _generate_matplot_output_file(
+                                    current_file_path, "csv"
+                                )
+                            );
+
+                            std::string output = "Input Size";
+                            for (const std::string suspect_name :
+                                result.suspect_names)
+                            {
+                                output += "," + suspect_name;
+                            }
+                            output += "\n";
+
+                            size_t result_input_size =
+                                    result.input_sizes.size(),
+                                result_suspect_size =
+                                    result.suspect_names.size(),
+                                result_suspect_row_size =
+                                    result_suspect_size + 1;
+                            for (index_a = 0;
+                                index_a < result_input_size;
+                                ++index_a)
+                            {
+                                output +=
+                                    absl::StrCat(result.input_sizes[index_a]);
+                                for (index_b = 0;
+                                    index_b < result_suspect_size;
+                                    ++index_b)
+                                {
+                                    output += absl::StrCat(
+                                        ",",
+                                        result.durations[index_b][index_a]
+                                    );
+                                }
+                                output += "\n";
+                            }
+                            CSV_FILE_IO.write_async(output);
+                        })
+                    );
+                }
+
+                for (auto& output_future : output_futures)
+                {
+                    output_future.get();
                 }
             }
 
