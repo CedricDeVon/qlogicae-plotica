@@ -95,7 +95,7 @@ namespace QLogicaePlotica
         size_t incremental_input_count = 1;
         size_t ending_input_count = 1000;
         size_t input_retry_count = 1;
-        size_t warmup_iterations = 0;
+        size_t warmup_iterations = 1;
         size_t maximum_output_count = 1000;
         std::string x_title = "Input Size";
         std::string y_title = "Time";

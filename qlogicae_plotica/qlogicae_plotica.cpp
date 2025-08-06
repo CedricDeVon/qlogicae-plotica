@@ -198,9 +198,9 @@ namespace QLogicaePlotica
                 !execution_data_is_file_output_enabled) ||
                 !execution_data_title_size ||
                 !execution_data_suspects_size ||
-                execution_data_starting_input_count == 0 ||
+                execution_data_starting_input_count < 0 ||
                 execution_data_incremental_input_count < 1 ||
-                execution_data_input_retry_count == 0 ||
+                execution_data_input_retry_count < 0 ||
                 execution_data_ending_input_count <
                 execution_data_starting_input_count)
             {
@@ -277,7 +277,7 @@ namespace QLogicaePlotica
 
                                 double execution_average = 0.0;
                                 for (size_t index = 0;
-                                    index < execution_data.input_retry_count;
+                                    index < execution_data_input_retry_count;
                                     ++index)
                                 {
                                     BenchmarkerResultData benchmark_result_execution_data(
@@ -405,39 +405,27 @@ namespace QLogicaePlotica
                         )
                     );
 
-                    std::string output;
-                    output = absl::StrCat(
-                        "Input Size,",
-                        absl::StrJoin(result.suspect_names, ","), "\n"
-                    );
+                    std::string output = "Input Size";
+                    for (const std::string suspect_name : result.suspect_names)
+                    {
+                        output += "," + suspect_name;
+                    }
+                    output += "\n";
 
                     size_t result_input_size = result.input_sizes.size(),
                         result_suspect_size = result.suspect_names.size(),
                         result_suspect_row_size = result_suspect_size + 1;
-                    for (index_a = 0;
-                        index_a < result_input_size;
-                        ++index_a)
+                    for (index_a = 0; index_a < result_input_size; ++index_a)
                     {
-                        std::vector<double> row;
-                        row.reserve(result_suspect_row_size);
-                        row.push_back(
-                            result.input_sizes[index_a]
-                        );
-
+                        output += absl::StrCat(result.input_sizes[index_a]);
                         for (index_b = 0;
                             index_b < result_suspect_size;
                             ++index_b)
                         {
-                            row.push_back(
-                                result.durations[index_b][index_a]
-                            );
+                            output += absl::StrCat(",", result.durations[index_b][index_a]);
                         }
-
-                        absl::StrAppend(
-                            &output, absl::StrJoin(row, ","), "\n"
-                        );
+                        output += "\n";
                     }
-
                     CSV_FILE_IO.write_async(output);
                 }
             }
@@ -469,21 +457,16 @@ namespace QLogicaePlotica
         try
         {
             std::string complete_matplot_output_directory_path =
-                absl::StrCat(
-                    title, "/", TIME.now(
-                        QLogicaeCore::TimeFormat::FULL_DASHED_TIMESTAMP
-                    )
+                title + "/" + TIME.now(
+                    QLogicaeCore::TimeFormat::FULL_DASHED_TIMESTAMP
                 );
             complete_matplot_output_directory_path =
                 (file_path.empty()) ?
-                absl::StrCat(
-                    DEFAULT_PROJECT_ROOT_OUTPUT_PATH, "/",
+                    DEFAULT_PROJECT_ROOT_OUTPUT_PATH + "/" +
                     complete_matplot_output_directory_path
-                ) :
-                absl::StrCat(
-                    file_path, "/",
-                    complete_matplot_output_directory_path
-                );
+                 :
+                    file_path + "/" +
+                    complete_matplot_output_directory_path;
             if (!std::filesystem::exists(
                 complete_matplot_output_directory_path))
             {
@@ -505,11 +488,9 @@ namespace QLogicaePlotica
     {
         try
         {
-            return absl::StrCat(
-                file_path, "/",
-                DEFAULT_PROJECT_BENCHMARK_OUTPUT_FOLDER, ".",
-                extension_name
-            );
+            return file_path + "/" +
+                DEFAULT_PROJECT_BENCHMARK_OUTPUT_FOLDER + "." +
+                extension_name;
         }
         catch (...)
         {
