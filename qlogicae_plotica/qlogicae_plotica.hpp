@@ -91,12 +91,14 @@ namespace QLogicaePlotica
     {
         std::string title = "Title";
         std::string output_folder_path = "";
+        size_t input_count = 1;
         size_t starting_input_count = 1;
         size_t incremental_input_count = 1;
-        size_t ending_input_count = 1000;
+        size_t ending_input_count = 100;
         size_t input_retry_count = 1;
         size_t warmup_iterations = 1;
-        size_t maximum_output_count = 1000;
+        size_t maximum_output_count = 1'000'000;
+
         std::string x_title = "Input Size";
         std::string y_title = "Time";
         QLogicaeCore::TimeScaleUnit y_axis_time_scale_unit =
@@ -131,6 +133,9 @@ namespace QLogicaePlotica
 
         BenchmarkerResult execute(const BenchmarkerExecutionData& data);
         std::future<BenchmarkerResult> execute_async(
+            const BenchmarkerExecutionData& data);
+        BenchmarkerResult execute_a(const BenchmarkerExecutionData& data);
+        std::future<BenchmarkerResult> execute_a_async(
             const BenchmarkerExecutionData& data);
 
     protected:

@@ -9,6 +9,7 @@ namespace QLogicaePlotica
     static QLogicaeCore::ThreadPool& THREAD_POOL =
         QLogicaeCore::ThreadPool::get_instance();
     static QLogicaeCore::CsvFileIO CSV_FILE_IO;
+    static QLogicaeCore::TextFileIO TEXT_FILE_IO;
     static QLogicaeCore::Time& TIME = QLogicaeCore::Time::get_instance();
     static QLogicaeCore::Generator& GENERATOR = QLogicaeCore::Generator::get_instance();
     static const std::vector<std::string> DEFAULT_GUI_LINE_COLORS =
