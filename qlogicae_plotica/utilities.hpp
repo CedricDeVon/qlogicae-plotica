@@ -9,7 +9,10 @@ namespace QLogicaePlotica
     static QLogicaeCore::ThreadPool& THREAD_POOL =
         QLogicaeCore::ThreadPool::get_instance();
     static QLogicaeCore::CsvFileIO CSV_FILE_IO;
+    static QLogicaeCore::JsonFileIO JSON_FILE_IO;
     static QLogicaeCore::TextFileIO TEXT_FILE_IO;
+    static QLogicaeCore::Logger Logger;
+    static QLogicaeCore::CliIO& CLI_IO = QLogicaeCore::CliIO::get_instance();
     static QLogicaeCore::Time& TIME = QLogicaeCore::Time::get_instance();
     static QLogicaeCore::Generator& GENERATOR = QLogicaeCore::Generator::get_instance();
     static const std::vector<std::string> DEFAULT_GUI_LINE_COLORS =
@@ -21,6 +24,7 @@ namespace QLogicaePlotica
     // These path variables are strings because matplot++ does not parse std::filesystem::path().string() properly
     static const std::string DEFAULT_COMPANY_ROOT_OUTPUT_FOLDER = ".qlogicae";
     static const std::string DEFAULT_PROJECT_ROOT_OUTPUT_FOLDER = "plotica";
+    static const std::string DEFAULT_CONFIGURATIONS_FILE_NAME = "configurations.json";
     static const std::string DEFAULT_PROJECT_BENCHMARK_OUTPUT_FOLDER = "data";
     static const std::string DEFAULT_PROJECT_ROOT_OUTPUT_PATH =
         DEFAULT_COMPANY_ROOT_OUTPUT_FOLDER + "/" + DEFAULT_PROJECT_ROOT_OUTPUT_FOLDER;

@@ -9,7 +9,43 @@ int main()
     QLogicaePlotica::RuntimePerformanceBenchmarker& benchmarker =
         QLogicaePlotica::RuntimePerformanceBenchmarker::get_instance();
 
-    
+    benchmarker.execute(
+    {
+        .title = "String Concatenations",
+        .suspects =
+        {
+            {
+                .title = "+= (with reserve())",
+                .on_execution = [](QLogicaePlotica::BenchmarkerResultData& data)
+                {
+                    data.set_start_execution_time();
+                    size_t ia, sa = data.get_input_size();
+                    std::string vb;
+                    vb.reserve(sa);
+                    for (ia = 0; ia < sa; ++ia)
+                    {
+                        vb += "0";
+                    }
+                    data.set_end_execution_time();
+                }
+            },
+            {
+                .title = "append()",
+                .on_execution = [](QLogicaePlotica::BenchmarkerResultData& data)
+                {
+                    data.set_start_execution_time();
+                    size_t ia, sa = data.get_input_size();
+                    std::string vb;
+                    vb.reserve(sa);
+                    for (ia = 0; ia < sa; ++ia)
+                    {
+                        vb.append("0");
+                    }
+                    data.set_end_execution_time();
+                }
+            }
+        }
+    });
     
     return 0;
 }

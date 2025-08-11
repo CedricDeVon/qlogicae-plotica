@@ -17,8 +17,36 @@ namespace QLogicaePlotica
         BOTTOM_LEFT,
         BOTTOM_RIGHT,
         LEFT,
-        CENTER
+        CENTER,
+        NONE
     };
+
+    matplot::legend::general_alignment get_benchmark_legend_alignment(
+        const BenchmarkerLegendAlignment&);
+
+    std::string convert_benchmark_legend_alignment_from_enum_to_string(
+        const BenchmarkerLegendAlignment& value
+    );
+
+    BenchmarkerLegendAlignment
+        convert_benchmark_legend_alignment_from_string_to_enum(
+            const std::string& value
+    );
+
+    enum class BenchmarkerGraph : uint8_t
+    {
+        LINE,
+        BOXPLOT,
+        NONE
+    };
+
+    std::string convert_benchmarker_graph_from_enum_to_string(
+        const BenchmarkerGraph& value
+    );
+
+    BenchmarkerGraph convert_benchmarker_graph_from_string_to_enum(
+        const std::string& value
+    );
 
     class BenchmarkerResultData
     {
@@ -82,30 +110,31 @@ namespace QLogicaePlotica
     struct BenchmarkerSuspectData
     {
         std::string title;
-        std::string line_color;
+        std::string color_1;
+        std::string color_2;
         std::function<void(BenchmarkerResultData&)> on_setup;
         std::function<void(BenchmarkerResultData&)> on_execution;
     };
 
     struct BenchmarkerExecutionData
     {
+        bool is_execution_enabled = true;
+        bool is_configuration_parsing_enabled = true;
         std::string title = "Title";
-        std::string output_folder_path = "";
-        size_t input_count = 1;
+        BenchmarkerGraph graph = BenchmarkerGraph::BOXPLOT;
         size_t starting_input_count = 1;
         size_t incremental_input_count = 1;
         size_t ending_input_count = 100;
         size_t input_retry_count = 1;
-        size_t warmup_iterations = 1;
+        size_t warmup_input_count = 1;
         size_t maximum_output_count = 1'000'000;
-
         std::string x_title = "Input Size";
         std::string y_title = "Time";
-        QLogicaeCore::TimeScaleUnit y_axis_time_scale_unit =
-            QLogicaeCore::TimeScaleUnit::NANOSECONDS;
         BenchmarkerLegendAlignment legend_alignment =
             BenchmarkerLegendAlignment::TOP;
-        bool is_line_color_set_to_default = true;
+        QLogicaeCore::TimeScaleUnit y_axis_time_scale_unit =
+            QLogicaeCore::TimeScaleUnit::NANOSECONDS;
+        bool is_default_line_color_enabled = true;
         bool is_gui_output_enabled = true;
         bool is_csv_output_enabled = false;
         bool is_json_output_enabled = false;
@@ -116,9 +145,12 @@ namespace QLogicaePlotica
         bool is_txt_output_enabled = false;
         bool is_eps_output_enabled = false;
         bool is_tex_output_enabled = false;
+        std::string output_folder_path = DEFAULT_PROJECT_ROOT_OUTPUT_PATH;
         std::vector<BenchmarkerSuspectData> suspects;
     };
 
+    static BenchmarkerExecutionData default_result;
+    
     struct BenchmarkerResult
     {
         bool success = true;
@@ -130,12 +162,9 @@ namespace QLogicaePlotica
     class RuntimePerformanceBenchmarker
     {
     public:
-        BenchmarkerResult execute(const BenchmarkerExecutionData& data);
+        BenchmarkerResult execute(BenchmarkerExecutionData data);
         std::future<BenchmarkerResult> execute_async(
-            const BenchmarkerExecutionData& data);
-        BenchmarkerResult execute_a(const BenchmarkerExecutionData& data);
-        std::future<BenchmarkerResult> execute_a_async(
-            const BenchmarkerExecutionData& data);
+            BenchmarkerExecutionData data);
         
         static RuntimePerformanceBenchmarker& get_instance();
 
@@ -153,17 +182,28 @@ namespace QLogicaePlotica
 
         mutable std::mutex _mutex;
 
+        bool _handle_initial_setup(
+            BenchmarkerExecutionData& execution_data,
+            const std::string& root_folder_path);
         std::vector<size_t> _generate_downsampled_indices(
             const size_t& total_points, const size_t& maximum_points) const;
-        std::string _generate_matplot_output_file(
-            const std::string& file_path,
-            const std::string& extension_name);
-        std::string _generate_matplot_output_directory_path(
-            const std::string& file_path,
-            const std::string& title);
-        matplot::legend::general_alignment _get_benchmark_legend_alignment(
-            const BenchmarkerLegendAlignment&) const;
     };
+
+    std::string generate_root_folder(
+        const std::string& file_path,
+        const std::string& title);
+    
+    std::string generate_configuration_file_path(
+        const std::string& file_path,
+        const std::string& title);
+    
+    std::string generate_matplot_output_file(
+        const std::string& file_path,
+        const std::string& extension_name);
+    
+    std::string generate_matplot_output_directory_path(
+        const std::string& file_path,
+        const std::string& title);
 }
 
 
@@ -190,8 +230,8 @@ namespace QLogicaePlotica
                 execution_data.y_axis_time_scale_unit;
             BenchmarkerLegendAlignment execution_data_legend_alignment =
                 execution_data.legend_alignment;
-            const bool execution_data_is_line_color_set_to_default =
-                execution_data.is_line_color_set_to_default;
+            const bool execution_data_is_default_line_color_enabled =
+                execution_data.is_default_line_color_enabled;
             const size_t execution_data_title_size =
                 execution_data.title.size();
             const size_t execution_data_suspects_size =
@@ -255,7 +295,7 @@ namespace QLogicaePlotica
             }
             std::unordered_map<std::string, bool> matplot_defined_outputs;
             std::vector<std::string> line_colors;
-            if (execution_data_is_line_color_set_to_default)
+            if (execution_data_is_default_line_color_enabled)
             {
                 line_colors = DEFAULT_GUI_LINE_COLORS;
             }
@@ -547,8 +587,8 @@ namespace QLogicaePlotica
                 execution_data.y_axis_time_scale_unit;
             BenchmarkerLegendAlignment execution_data_legend_alignment =
                 execution_data.legend_alignment;
-            const bool execution_data_is_line_color_set_to_default =
-                execution_data.is_line_color_set_to_default;
+            const bool execution_data_is_default_line_color_enabled =
+                execution_data.is_default_line_color_enabled;
             const size_t execution_data_title_size =
                 execution_data.title.size();
             const size_t execution_data_suspects_size =
@@ -604,7 +644,7 @@ namespace QLogicaePlotica
                 return result;
             }
             std::vector<std::string> line_colors;
-            if (execution_data_is_line_color_set_to_default)
+            if (execution_data_is_default_line_color_enabled)
             {
                 line_colors = DEFAULT_GUI_LINE_COLORS;
             }
