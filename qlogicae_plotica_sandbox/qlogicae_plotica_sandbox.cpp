@@ -9,16 +9,23 @@ int main()
     QLogicaePlotica::RuntimePerformanceBenchmarker& benchmarker =
         QLogicaePlotica::RuntimePerformanceBenchmarker::get_instance();
 
-    benchmarker.execute_a(
+    
+    
+    return 0;
+}
+
+/*
+benchmarker.execute_a(
         {
             .title = "String Concatenations",
-            .input_count = 1'000'000,
+            .input_count = 100'000,
             .input_retry_count = 100,
             .warmup_iterations = 2,
             .y_axis_time_scale_unit =
                 QLogicaeCore::TimeScaleUnit::SECONDS,
             .is_csv_output_enabled = true,
-            .is_jpg_output_enabled = true,      
+            .is_jpg_output_enabled = true,
+            .is_svg_output_enabled = true,
             .suspects =
             {
                 {
@@ -57,15 +64,11 @@ int main()
                         data.set_end_execution_time();
                     }
                 }
-            }            
+            }
         }
     );
-    
-    return 0;
-}
 
-/*
-* ,
+
                 {
                     .title = "+= (without reserve())",
                     .on_setup = [](QLogicaePlotica::BenchmarkerResultData& data)
