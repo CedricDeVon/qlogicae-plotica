@@ -112,8 +112,10 @@ namespace QLogicaePlotica
         std::string title;
         std::string color_1;
         std::string color_2;
-        std::function<void(BenchmarkerResultData&)> on_setup;
-        std::function<void(BenchmarkerResultData&)> on_execution;
+        std::function<void(BenchmarkerResultData&)> on_setup
+            = [](BenchmarkerResultData& data) {};
+        std::function<void(BenchmarkerResultData&)> on_execution
+            = [](BenchmarkerResultData& data) {};
     };
 
     struct BenchmarkerExecutionData
@@ -134,6 +136,7 @@ namespace QLogicaePlotica
             BenchmarkerLegendAlignment::TOP;
         QLogicaeCore::TimeScaleUnit y_axis_time_scale_unit =
             QLogicaeCore::TimeScaleUnit::NANOSECONDS;
+        bool is_file_output_enabled = true;
         bool is_default_line_color_enabled = true;
         bool is_gui_output_enabled = true;
         bool is_csv_output_enabled = false;
@@ -184,6 +187,12 @@ namespace QLogicaePlotica
 
         bool _setup_file_system(
             BenchmarkerExecutionData& execution_data);
+        bool _setup_benchmark_data(
+            BenchmarkerExecutionData& execution_data,
+            BenchmarkerResult& execution_result);
+        bool _setup_output(
+            BenchmarkerExecutionData& execution_data,
+            BenchmarkerResult& execution_result);
         std::vector<size_t> _generate_downsampled_indices(
             const size_t& total_points, const size_t& maximum_points) const;
     };
@@ -201,8 +210,7 @@ namespace QLogicaePlotica
         const std::string& extension_name);
     
     std::string generate_matplot_output_directory_path(
-        const std::string& file_path,
-        const std::string& title);
+        const std::string& file_path);
 }
 
 
