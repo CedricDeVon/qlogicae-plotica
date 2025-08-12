@@ -119,76 +119,67 @@ namespace QLogicaePlotica
 
             return indices;
         }
-        catch (...)
+        catch (const std::exception& exception)
         {
+            Logger.log_async(std::string() + "RuntimePerformanceBenchmarker::_generate_downsampled_indices(): " + exception.what(), QLogicaeCore::LogLevel::EXCEPTION);
+
             return {};
         }
     }
 
-    bool RuntimePerformanceBenchmarker::_handle_initial_setup(
-        BenchmarkerExecutionData& execution_data,
-        const std::string& root_folder_path)
+    bool RuntimePerformanceBenchmarker::_setup_file_system(
+        BenchmarkerExecutionData& execution_data)
     {
         try
         {
             if (execution_data.is_configuration_parsing_enabled)
             {
-                std::string configuration_file_path = root_folder_path +
+                size_t index_a,
+                    size_b = execution_data.suspects.size(),
+                    size_a = size_b - 1,
+                    size_c,
+                    size_d,
+                    size_e;
+
+                std::string configuration_file_path =
+                    execution_data.output_folder_path +
                     QLogicaeCore::Constants::FRONT_SLASH +
                     DEFAULT_CONFIGURATIONS_FILE_NAME;
 
                 JSON_FILE_IO.set_file_path(configuration_file_path);
                 if (!std::filesystem::exists(configuration_file_path))
                 {
-                    std::string suspects_json_string = "";
-                    size_t index,
-                        suspects_size = execution_data.suspects.size(),
-                        suspects_size_a = suspects_size - 1;
+                    std::string suspects_json_string = "",
+                        suspects_titles_json_string = "\t\t \"titles\": [\n",
+                        suspects_color_1s_json_string = "\t\t \"color_1s\": [\n",
+                        suspects_color_2s_json_string = "\t\t \"color_2s\": [\n";
 
-                    suspects_json_string += "\t\t \"titles\": [\n";
-                    for (index = 0; index < suspects_size; ++index)
+                    for (index_a = 0; index_a < size_b; ++index_a)
                     {
-                        BenchmarkerSuspectData benchmarker_suspect_data = execution_data.suspects[index];
-                        suspects_json_string += "\t\t\t\"" + benchmarker_suspect_data.title + "\"";
-                        if (index < suspects_size_a)
-                        {
-                            suspects_json_string += ",";
-                        }
-                        suspects_json_string += "\n";
-                    }
-                    suspects_json_string += "\t\t],\n";
+                        BenchmarkerSuspectData& benchmarker_suspect_data = execution_data.suspects[index_a];
 
-                    suspects_json_string += "\t\t \"color_1s\": [\n";
-                    for (index = 0; index < suspects_size; ++index)
-                    {
-                        BenchmarkerSuspectData benchmarker_suspect_data = execution_data.suspects[index];
-                        suspects_json_string += "\t\t\t\"" + benchmarker_suspect_data.color_1 + "\"";
-                        if (index < suspects_size_a)
-                        {
-                            suspects_json_string += ",";
-                        }
-                        suspects_json_string += "\n";
-                    }
-                    suspects_json_string += "\t\t],\n";
+                        suspects_titles_json_string += "\t\t\t\"" + benchmarker_suspect_data.title + "\"";
+                        suspects_color_1s_json_string += "\t\t\t\"" + benchmarker_suspect_data.color_1 + "\"";
+                        suspects_color_2s_json_string += "\t\t\t\"" + benchmarker_suspect_data.color_2 + "\"";
 
-                    suspects_json_string += "\t\t \"color_2s\": [\n";
-                    for (index = 0; index < suspects_size; ++index)
-                    {
-                        BenchmarkerSuspectData benchmarker_suspect_data = execution_data.suspects[index];
-                        suspects_json_string += "\t\t\t\"" + benchmarker_suspect_data.color_2 + "\"";
-                        if (index < suspects_size_a)
+                        if (index_a < size_a)
                         {
-                            suspects_json_string += ",";
+                            suspects_titles_json_string += ",";
+                            suspects_color_1s_json_string += ",";
+                            suspects_color_2s_json_string += ",";
                         }
-                        suspects_json_string += "\n";
+                        suspects_titles_json_string += "\n";
+                        suspects_color_1s_json_string += "\n";
+                        suspects_color_2s_json_string += "\n";
                     }
-                    suspects_json_string += "\t\t]\n";
+                    suspects_json_string += suspects_titles_json_string + "\t\t],\n" +
+                        suspects_color_1s_json_string + "\t\t],\n" +
+                        suspects_color_2s_json_string + "\t\t]\n";
 
                     std::string json_string = std::string() +
                         "{\n" +
                         "\t\"properties\": {\n" +
-                        "\t\t\"is_execution_enabled\": " + absl::StrCat(execution_data.is_execution_enabled) + ",\n" +
-                        "\t\t\"is_configuration_parsing_enabled\": " + absl::StrCat(execution_data.is_configuration_parsing_enabled) + ",\n" +
+                        "\t\t\"is_execution_enabled\": " + (execution_data.is_execution_enabled ? "true" : "false") + ",\n" +
                         "\t\t\"title\": \"" + execution_data.title + "\",\n" +
                         "\t\t\"graph\": \"" + convert_benchmarker_graph_from_enum_to_string(execution_data.graph) + "\",\n" +
                         "\t\t\"starting_input_count\": " + absl::StrCat(execution_data.starting_input_count) + ",\n" +
@@ -201,21 +192,20 @@ namespace QLogicaePlotica
                         "\t\t\"y_title\": \"" + execution_data.y_title + "\",\n" +
                         "\t\t\"legend_alignment\": \"" + convert_benchmark_legend_alignment_from_enum_to_string(execution_data.legend_alignment) + "\",\n" +
                         "\t\t\"y_axis_time_scale_unit\": \"" + TIME.get_time_unit_abbreviation(execution_data.y_axis_time_scale_unit).data() + "\",\n" +
-                        "\t\t\"is_default_line_color_enabled\": " + absl::StrCat(execution_data.is_default_line_color_enabled) + ",\n" +
-                        "\t\t\"is_gui_output_enabled\": " + absl::StrCat(execution_data.is_gui_output_enabled) + ",\n" +
-                        "\t\t\"is_csv_output_enabled\": " + absl::StrCat(execution_data.is_csv_output_enabled) + ",\n" +
-                        "\t\t\"is_json_output_enabled\": " + absl::StrCat(execution_data.is_json_output_enabled) + ",\n" +
-                        "\t\t\"is_jpg_output_enabled\": " + absl::StrCat(execution_data.is_jpg_output_enabled) + ",\n" +
-                        "\t\t\"is_html_output_enabled\": " + absl::StrCat(execution_data.is_html_output_enabled) + ",\n" +
-                        "\t\t\"is_svg_output_enabled\": " + absl::StrCat(execution_data.is_svg_output_enabled) + ",\n" +
-                        "\t\t\"is_gif_output_enabled\": " + absl::StrCat(execution_data.is_gif_output_enabled) + ",\n" +
-                        "\t\t\"is_txt_output_enabled\": " + absl::StrCat(execution_data.is_txt_output_enabled) + ",\n" +
-                        "\t\t\"is_eps_output_enabled\": " + absl::StrCat(execution_data.is_eps_output_enabled) + ",\n" +
-                        "\t\t\"is_tex_output_enabled\": " + absl::StrCat(execution_data.is_tex_output_enabled) + ",\n" +
-                        "\t\t\"output_folder_path\": \"" + execution_data.output_folder_path + "\"\n"
+                        "\t\t\"is_default_line_color_enabled\": " + (execution_data.is_default_line_color_enabled ? "true" : "false") + ",\n" +
+                        "\t\t\"is_gui_output_enabled\": " + (execution_data.is_gui_output_enabled ? "true" : "false") + ",\n" +
+                        "\t\t\"is_csv_output_enabled\": " + (execution_data.is_csv_output_enabled ? "true" : "false") + ",\n" +
+                        "\t\t\"is_json_output_enabled\": " + (execution_data.is_json_output_enabled ? "true" : "false") + ",\n" +
+                        "\t\t\"is_jpg_output_enabled\": " + (execution_data.is_jpg_output_enabled ? "true" : "false") + ",\n" +
+                        "\t\t\"is_html_output_enabled\": " + (execution_data.is_html_output_enabled ? "true" : "false") + ",\n" +
+                        "\t\t\"is_svg_output_enabled\": " + (execution_data.is_svg_output_enabled ? "true" : "false") + ",\n" +
+                        "\t\t\"is_gif_output_enabled\": " + (execution_data.is_gif_output_enabled ? "true" : "false") + ",\n" +
+                        "\t\t\"is_txt_output_enabled\": " + (execution_data.is_txt_output_enabled ? "true" : "false") + ",\n" +
+                        "\t\t\"is_eps_output_enabled\": " + (execution_data.is_eps_output_enabled ? "true" : "false") + ",\n" +
+                        "\t\t\"is_tex_output_enabled\": " + (execution_data.is_tex_output_enabled ? "true" : "false") + "\n" +
                         "\t},\n" +
                         "\t\"suspects\": {\n" +
-                        suspects_json_string +
+                            suspects_json_string +
                         "\t}\n" +
                         "}\n";
 
@@ -224,7 +214,6 @@ namespace QLogicaePlotica
                 else
                 {
                     execution_data.is_execution_enabled = JSON_FILE_IO.get_bool({ "properties", "is_execution_enabled" });
-                    execution_data.is_configuration_parsing_enabled = JSON_FILE_IO.get_bool({ "properties", "is_configuration_parsing_enabled" });
                     execution_data.title = JSON_FILE_IO.get_string({ "properties", "title" });
                     execution_data.graph = convert_benchmarker_graph_from_string_to_enum(JSON_FILE_IO.get_string({ "properties", "graph" }));
                     execution_data.starting_input_count = static_cast<size_t>(JSON_FILE_IO.get_double({ "properties", "starting_input_count" }));
@@ -248,25 +237,27 @@ namespace QLogicaePlotica
                     execution_data.is_txt_output_enabled = JSON_FILE_IO.get_bool({ "properties", "is_txt_output_enabled" });
                     execution_data.is_eps_output_enabled = JSON_FILE_IO.get_bool({ "properties", "is_eps_output_enabled" });
                     execution_data.is_tex_output_enabled = JSON_FILE_IO.get_bool({ "properties", "is_tex_output_enabled" });
-                    execution_data.output_folder_path = JSON_FILE_IO.get_string({ "properties", "output_folder_path" });
 
                     std::vector<std::any> titles = JSON_FILE_IO.get_array({ "suspects", "titles" });
                     std::vector<std::any> color_1s = JSON_FILE_IO.get_array({ "suspects", "color_1s" });
                     std::vector<std::any> color_2s = JSON_FILE_IO.get_array({ "suspects", "color_2s" });
+                    size_c = titles.size();
+                    size_d = color_1s.size();
+                    size_e = color_2s.size();
 
-                    size_t index, titles_size = titles.size(), color_1s_size = color_1s.size(), color_2s_size = color_2s.size();
-                    if (titles_size != color_1s_size || titles_size != color_2s_size)
+                    if (size_c != size_d || size_c != size_e)
                     {
-                        Logger.log_async("'suspects.titles', 'suspects.color_1s', and 'suspects.color_2s' array properties must be of equal size", QLogicaeCore::LogLevel::EXCEPTION);
+                        Logger.log_async("RuntimePerformanceBenchmarker::_setup_file_system(): " + std::string("'suspects.titles', 'suspects.color_1s', and 'suspects.color_2s' array properties must be of equal size"), QLogicaeCore::LogLevel::EXCEPTION);
 
                         return false;
                     }
-
-                    for (index = 0; index < titles_size; ++index)
+                    for (index_a = 0; index_a < size_c; ++index_a)
                     {
-                        execution_data.suspects[index].title = std::any_cast<std::string>(titles[index]);
-                        execution_data.suspects[index].color_1 = std::any_cast<std::string>(color_1s[index]);
-                        execution_data.suspects[index].color_2 = std::any_cast<std::string>(color_2s[index]);
+                        BenchmarkerSuspectData& benchmarker_suspect_data = execution_data.suspects[index_a];
+
+                        benchmarker_suspect_data.title = std::any_cast<std::string>(titles[index_a]);
+                        benchmarker_suspect_data.color_1 = std::any_cast<std::string>(color_1s[index_a]);
+                        benchmarker_suspect_data.color_2 = std::any_cast<std::string>(color_2s[index_a]);
                     }
                 }
             }
@@ -275,7 +266,7 @@ namespace QLogicaePlotica
         }
         catch (const std::exception& exception)
         {
-            Logger.log_async(std::string(exception.what()), QLogicaeCore::LogLevel::EXCEPTION);
+            Logger.log_async("RuntimePerformanceBenchmarker::_setup_file_system(): " + std::string(exception.what()), QLogicaeCore::LogLevel::EXCEPTION);
 
             return false;
         }
@@ -289,21 +280,23 @@ namespace QLogicaePlotica
             std::scoped_lock lock(_mutex);
          
             BenchmarkerResult result;
-            std::string root_folder_path = generate_root_folder(
+            execution_data.output_folder_path = generate_root_folder(
                 execution_data.output_folder_path,
                 execution_data.title
             );
-            bool handle_initial_setup_result = _handle_initial_setup(execution_data, root_folder_path);
-            if (!handle_initial_setup_result)
+
+            if (!_setup_file_system(execution_data))
             {
-                return BenchmarkerResult();
-            }           
-            
+                return result;
+            }
+
+
+
             return result;
         }
         catch (const std::exception& exception)
         {
-            Logger.log_async(std::string(exception.what()), QLogicaeCore::LogLevel::EXCEPTION);
+            Logger.log_async(std::string() + "RuntimePerformanceBenchmarker::execute(): " + exception.what(), QLogicaeCore::LogLevel::EXCEPTION);
 
             return BenchmarkerResult();
         }
@@ -338,8 +331,10 @@ namespace QLogicaePlotica
 
             return complete_folder_path;
         }
-        catch (...)
+        catch (const std::exception& exception)
         {
+            Logger.log_async(std::string() + "generate_root_folder(): " + exception.what(), QLogicaeCore::LogLevel::EXCEPTION);
+
             return QLogicaeCore::Constants::EMPTY_STRING;
         }
     }
@@ -374,8 +369,10 @@ namespace QLogicaePlotica
 
             return complete_matplot_output_directory_path;
         }
-        catch (...)
+        catch (const std::exception& exception)
         {
+            Logger.log_async(std::string() + "generate_configuration_file_path(): " + exception.what(), QLogicaeCore::LogLevel::EXCEPTION);
+
             return QLogicaeCore::Constants::EMPTY_STRING;
         }
     }
@@ -412,8 +409,10 @@ namespace QLogicaePlotica
 
             return complete_matplot_output_directory_path;
         }
-        catch (...)
+        catch (const std::exception& exception)
         {
+            Logger.log_async(std::string() + "generate_matplot_output_directory_path(): " + exception.what(), QLogicaeCore::LogLevel::EXCEPTION);
+
             return QLogicaeCore::Constants::EMPTY_STRING;
         }
     }
@@ -430,8 +429,10 @@ namespace QLogicaePlotica
                 QLogicaeCore::Constants::DOT +
                 extension_name;
         }
-        catch (...)
+        catch (const std::exception& exception)
         {
+            Logger.log_async(std::string() + "generate_matplot_output_file(): " + exception.what(), QLogicaeCore::LogLevel::EXCEPTION);
+
             return QLogicaeCore::Constants::EMPTY_STRING;
         }
     }

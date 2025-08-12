@@ -182,9 +182,8 @@ namespace QLogicaePlotica
 
         mutable std::mutex _mutex;
 
-        bool _handle_initial_setup(
-            BenchmarkerExecutionData& execution_data,
-            const std::string& root_folder_path);
+        bool _setup_file_system(
+            BenchmarkerExecutionData& execution_data);
         std::vector<size_t> _generate_downsampled_indices(
             const size_t& total_points, const size_t& maximum_points) const;
     };
