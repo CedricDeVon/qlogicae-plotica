@@ -100,6 +100,22 @@ namespace QLogicaePlotica
     {
         try
         {
+
+            indicators::ProgressBar progress_1
+            {
+                indicators::option::BarWidth{50},
+                indicators::option::Start{"["},
+                indicators::option::Fill{"="},
+                indicators::option::Lead{">"},
+                indicators::option::Remainder{" "},
+                indicators::option::End{"]"},
+                indicators::option::ForegroundColor{indicators::Color::white},
+                indicators::option::ShowPercentage{true},
+                indicators::option::ShowElapsedTime{true},
+                indicators::option::PrefixText{ "Setting Up File System: " },
+                indicators::option::ShowRemainingTime{true}
+            };
+
             execution_data.output_folder_path =
                 BenchmarkerFileSystem::generate_root_folder(
                     execution_data.output_folder_path,
@@ -268,6 +284,8 @@ namespace QLogicaePlotica
                     }
                 }
             }
+            
+            progress_1.set_progress(static_cast<size_t>(100.0));
 
             return true;
         }
@@ -349,6 +367,21 @@ namespace QLogicaePlotica
                 execution_data_suspects_size *
                 input_sizes_size;
 
+            indicators::ProgressBar progress_1
+            {
+                indicators::option::BarWidth{50},
+                indicators::option::Start{"["},
+                indicators::option::Fill{"="},
+                indicators::option::Lead{">"},
+                indicators::option::Remainder{" "},
+                indicators::option::End{"]"},
+                indicators::option::ForegroundColor{indicators::Color::white},
+                indicators::option::ShowPercentage{true},
+                indicators::option::ShowElapsedTime{true},
+                indicators::option::PrefixText{ "Collecting Results: " },
+                indicators::option::ShowRemainingTime{true}
+            };
+
             for (index_a = 0;
                 index_a < execution_data_suspects_size;
                 ++index_a)
@@ -357,7 +390,7 @@ namespace QLogicaePlotica
                     execution_data.suspects[index_a];
                 execution_result.suspect_names.push_back(suspect.title);
                 execution_result.durations[index_a].resize(input_sizes_size);
-
+                
                 for (index_b = 0;
                     index_b < downsample_indices_size;
                     ++index_b)
@@ -407,6 +440,8 @@ namespace QLogicaePlotica
                                     execution_average +=
                                         benchmark_result_execution_data
                                             .get_execution_duration_time();
+                                    progress_1.set_progress(static_cast<size_t>(
+                                        (100.0 * completed_tasks.load()) / index_c));
                                 }
 
                                 execution_average = TIME.convert_nanoseconds(
@@ -485,6 +520,34 @@ namespace QLogicaePlotica
     {
         try
         {
+            size_t
+                size_a = 0,
+                size_b = 
+                    execution_data.is_csv_output_enabled +
+                    execution_data.is_json_output_enabled +
+                    execution_data.is_jpg_output_enabled +
+                    execution_data.is_html_output_enabled +
+                    execution_data.is_svg_output_enabled +
+                    execution_data.is_gif_output_enabled +
+                    execution_data.is_txt_output_enabled +
+                    execution_data.is_eps_output_enabled +
+                    execution_data.is_tex_output_enabled;
+
+            indicators::ProgressBar progress_1
+            {
+                indicators::option::BarWidth{50},
+                indicators::option::Start{"["},
+                indicators::option::Fill{"="},
+                indicators::option::Lead{">"},
+                indicators::option::Remainder{" "},
+                indicators::option::End{"]"},
+                indicators::option::ForegroundColor{indicators::Color::white},
+                indicators::option::ShowPercentage{true},
+                indicators::option::ShowElapsedTime{true},
+                indicators::option::PrefixText{ "Output Results: " },
+                indicators::option::ShowRemainingTime{true}
+            };
+            
             if (execution_data.is_gnuplot_output_enabled)
             {
                 std::vector<std::string> line_colors;
@@ -712,9 +775,11 @@ namespace QLogicaePlotica
                 for (auto& output_future : output_futures)
                 {
                     output_future.get();
+                    progress_1.set_progress(static_cast<size_t>(
+                        (100.0 * ++size_a) / size_b));
                 }
             }
-
+            
             return true;
         }
         catch (const std::exception& exception)
@@ -725,40 +790,3 @@ namespace QLogicaePlotica
         }
     }
 }
-
-/*
-std::cout << execution_data.input_count << "\n";
-std::cout << execution_data.starting_input_count << "\n";
-std::cout << execution_data.incremental_input_count << "\n";
-std::cout << execution_data.ending_input_count << "\n";
-std::cout << execution_data.input_retry_count << "\n";
-std::cout << execution_data.warmup_input_count << "\n";
-std::cout << execution_data.maximum_output_count << "\n\n";
-
-std::cout << execution_data.title << "\n";
-// std::cout << execution_data.gnuplot_type << "\n";
-std::cout << execution_data.x_title << "\n";
-std::cout << execution_data.y_title << "\n";
-// std::cout << execution_data.legend_alignment << "\n";
-// std::cout << execution_data.y_axis_time_scale_unit << "\n";
-
-std::cout << execution_data.is_execution_enabled << "\n";
-std::cout << execution_data.is_data_transform_enabled << "\n";
-std::cout << execution_data.is_file_output_enabled << "\n";
-std::cout << execution_data.is_default_line_colors_enabled << "\n";
-std::cout << execution_data.is_gnuplot_output_enabled << "\n";
-std::cout << execution_data.is_csv_output_enabled << "\n";
-std::cout << execution_data.is_json_output_enabled << "\n";
-std::cout << execution_data.is_jpg_output_enabled << "\n";
-std::cout << execution_data.is_html_output_enabled << "\n";
-std::cout << execution_data.is_svg_output_enabled << "\n";
-std::cout << execution_data.is_gif_output_enabled << "\n";
-std::cout << execution_data.is_txt_output_enabled << "\n";
-std::cout << execution_data.is_eps_output_enabled << "\n";
-std::cout << execution_data.is_tex_output_enabled << "\n\n";
-
-std::cout << execution_data.outlier_removal_options.factor << "\n";
-std::cout << execution_data.outlier_removal_options.threshold << "\n";
-std::cout << execution_data.outlier_removal_options.proportion << "\n";
-std::cout << execution_data.outlier_removal_options.significance_level << "\n\n";
-*/

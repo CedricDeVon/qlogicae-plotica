@@ -1,6 +1,6 @@
 {
 	"benchmarks": {
-		"static_input_count": 10000000,
+		"static_input_count": 1000000,
 		"static_iteration_count": 100,
 		"starting_input_count": 100000,
 		"incremental_input_count": 100000,
