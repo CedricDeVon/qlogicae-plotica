@@ -116,7 +116,7 @@ namespace QLogicaePlotica
                     size_e;
                 std::string configuration_file_path =
                     execution_data.output_folder_path +
-                    QLogicaeCore::Constants::FRONT_SLASH +
+                    "/" +
                     DEFAULT_CONFIGURATIONS_FILE_NAME;
                 for (BenchmarkerSuspectParameters& suspect :
                     execution_data.suspects)
@@ -630,12 +630,9 @@ namespace QLogicaePlotica
                                 for (const std::string suspect_name :
                                 execution_result.suspect_names)
                                 {
-                                    output +=
-                                        QLogicaeCore::Constants::COMMA +
-                                        suspect_name;
+                                    output += "," + suspect_name;
                                 }
-                                output +=
-                                    QLogicaeCore::Constants::END_Of_LINE;
+                                output += "\n";
 
                                 size_t index_a, index_b,
                                     result_input_size =
@@ -657,12 +654,11 @@ namespace QLogicaePlotica
                                         ++index_b)
                                     {
                                         output += absl::StrCat(
-                                            QLogicaeCore::Constants::COMMA,
+                                            ",",
                                             execution_result.durations[index_b][index_a]
                                         );
                                     }
-                                    output +=
-                                        QLogicaeCore::Constants::END_Of_LINE;
+                                    output += "\n";
                                 }
                                 TEXT_FILE_IO.write_async(output);
                             })

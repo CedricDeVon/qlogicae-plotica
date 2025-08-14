@@ -15,7 +15,7 @@ int main()
         .suspects =
         {
             {
-                .title = "+=",
+                .title = "+= 1",
                 .on_execution = [](QLogicaePlotica::BenchmarkerResultData& data)
                 {
                     data.set_start_execution_time();
@@ -24,13 +24,13 @@ int main()
                     vb.reserve(sa);
                     for (ia = 0; ia < sa; ++ia)
                     {
-                        vb += "0";
+                        vb += "/";
                     }
                     data.set_end_execution_time();
                 }
             },
             {
-                .title = "absl::StrCat()",
+                .title = "+= 2",
                 .on_execution = [](QLogicaePlotica::BenchmarkerResultData& data)
                 {
                     data.set_start_execution_time();
@@ -39,7 +39,7 @@ int main()
                     vb.reserve(sa);
                     for (ia = 0; ia < sa; ++ia)
                     {
-                        vb += absl::StrCat("0");
+                        vb += QLogicaeCore::Constants::FRONT_SLASH;
                     }
                     data.set_end_execution_time();
                 }
