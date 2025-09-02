@@ -562,7 +562,7 @@ namespace QLogicaePlotica
                         line_colors.push_back(suspect.color_1);
                     }
                 }
-
+                
                 std::future<void> execution_data_is_gui_output_future =
                     std::async(std::launch::async, [=]() mutable
                         {

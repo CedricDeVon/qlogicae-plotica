@@ -39,7 +39,7 @@ int main()
                     vb.reserve(sa);
                     for (ia = 0; ia < sa; ++ia)
                     {
-                        vb += QLogicaeCore::Constants::FRONT_SLASH;
+                        vb += "//";
                     }
                     data.set_end_execution_time();
                 }
