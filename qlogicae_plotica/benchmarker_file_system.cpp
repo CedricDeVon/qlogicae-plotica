@@ -114,7 +114,8 @@ namespace QLogicaePlotica
         }
         catch (const std::exception& exception)
         {
-            UTILITIES.LOGGER.log_async(std::string("BenchmarkerFileSystem::generate_matplot_output_directory_path(): ") +
+            UTILITIES.LOGGER.log_async(
+                std::string("BenchmarkerFileSystem::generate_matplot_output_directory_path(): ") +
                 exception.what(),
                 QLogicaeCore::LogLevel::EXCEPTION
             );
@@ -138,7 +139,8 @@ namespace QLogicaePlotica
         }
         catch (const std::exception& exception)
         {
-            UTILITIES.LOGGER.log_async(std::string("BenchmarkerFileSystem::generate_matplot_output_file(): ") +
+            UTILITIES.LOGGER.log_async(
+                std::string("BenchmarkerFileSystem::generate_matplot_output_file(): ") +
                 exception.what(),
                 QLogicaeCore::LogLevel::EXCEPTION
             );

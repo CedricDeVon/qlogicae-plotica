@@ -36,13 +36,6 @@ namespace QLogicaePlotica
         size_t input_retry_count = 1;
         size_t warmup_input_count = 1;
         size_t maximum_output_count = 1'000'000;
-        QLogicaeCore::OutlierRemovalOptions outlier_removal_options =
-        {
-            .factor = 1.5,
-            .threshold = 3.0,
-            .proportion = 0.26,
-            .significance_level = 0.05
-        };
         std::string x_title = "Input Size";
         std::string y_title = "Time";
         BenchmarkerLegendAlignment legend_alignment =

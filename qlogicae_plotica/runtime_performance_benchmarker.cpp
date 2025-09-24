@@ -22,6 +22,10 @@ namespace QLogicaePlotica
 
             BenchmarkerResult execution_result;
 
+            UTILITIES.CLI_IO.print_with_new_line(
+                UTILITIES.get_full_name()
+            );
+
             if (!_setup_file_system(execution_data) ||
                 !_collect_results(execution_data, execution_result) ||
                 !_transform_results(execution_data, execution_result) ||
@@ -38,7 +42,7 @@ namespace QLogicaePlotica
         {
             BenchmarkerResult execution_result;
             UTILITIES.LOGGER.log_async(
-                std::string() + "RuntimePerformanceBenchmarker::execute(): " +
+                std::string("RuntimePerformanceBenchmarker::execute(): ") +
                 exception.what(),
                 QLogicaeCore::LogLevel::EXCEPTION
             );
@@ -92,7 +96,7 @@ namespace QLogicaePlotica
         catch (const std::exception& exception)
         {
             UTILITIES.LOGGER.log_async(
-                std::string() + "RuntimePerformanceBenchmarker::_generate_downsampled_indices(): " +
+                std::string("RuntimePerformanceBenchmarker::_generate_downsampled_indices(): ") +
                 exception.what(),
                 QLogicaeCore::LogLevel::EXCEPTION
             );
@@ -117,7 +121,7 @@ namespace QLogicaePlotica
                 indicators::option::ForegroundColor{indicators::Color::white},
                 indicators::option::ShowPercentage{true},
                 indicators::option::ShowElapsedTime{true},
-                indicators::option::PrefixText{ "Setting Up File System: " },
+                indicators::option::PrefixText{ "> Setting Up File System: " },
                 indicators::option::ShowRemainingTime{true}
             };
 
@@ -201,7 +205,6 @@ namespace QLogicaePlotica
                         "\t},\n" +
                         "\t\"is_enabled\": {\n" +
                         "\t\t\"execution\": " + (execution_data.is_execution_enabled ? "true" : "false") + ",\n" +
-                        "\t\t\"data_transform\": " + (execution_data.is_data_transform_enabled ? "true" : "false") + ",\n" +
                         "\t\t\"file_output\": " + (execution_data.is_file_output_enabled ? "true" : "false") + ",\n" +
                         "\t\t\"default_line_colors\": " + (execution_data.is_default_line_colors_enabled ? "true" : "false") + ",\n" +
                         "\t\t\"gnuplot_output\": " + (execution_data.is_gnuplot_output_enabled ? "true" : "false") + ",\n" +
@@ -214,12 +217,6 @@ namespace QLogicaePlotica
                         "\t\t\"txt_output\": " + (execution_data.is_txt_output_enabled ? "true" : "false") + ",\n" +
                         "\t\t\"eps_output\": " + (execution_data.is_eps_output_enabled ? "true" : "false") + ",\n" +
                         "\t\t\"tex_output\": " + (execution_data.is_tex_output_enabled ? "true" : "false") + "\n" +
-                        "\t},\n" +
-                        "\t\"outlier_removal_options\": {\n" +
-                        "\t\t\"factor\": " + absl::StrCat(execution_data.outlier_removal_options.factor) + ",\n" +
-                        "\t\t\"threshold\": " + absl::StrCat(execution_data.outlier_removal_options.threshold) + ",\n" +
-                        "\t\t\"proportion\": " + absl::StrCat(execution_data.outlier_removal_options.proportion) + ",\n" +
-                        "\t\t\"significance_level\": " + absl::StrCat(execution_data.outlier_removal_options.significance_level) + "\n" +
                         "\t},\n" +
                         "\t\"suspects\": {\n" +
                         suspects_json_string +
@@ -247,7 +244,6 @@ namespace QLogicaePlotica
                     execution_data.y_axis_time_scale_unit = UTILITIES.TIME.get_time_unit_abbreviation(UTILITIES.JSON_FILE_IO.get_string({ "gnuplot", "y_axis_time_scale_unit" }));
 
                     execution_data.is_execution_enabled = UTILITIES.JSON_FILE_IO.get_bool({ "is_enabled", "execution" });
-                    execution_data.is_data_transform_enabled = UTILITIES.JSON_FILE_IO.get_bool({ "is_enabled", "data_transform" });
                     execution_data.is_file_output_enabled = UTILITIES.JSON_FILE_IO.get_bool({ "is_enabled", "file_output" });
                     execution_data.is_default_line_colors_enabled = UTILITIES.JSON_FILE_IO.get_bool({ "is_enabled", "default_line_colors" });
                     execution_data.is_gnuplot_output_enabled = UTILITIES.JSON_FILE_IO.get_bool({ "is_enabled", "gnuplot_output" });
@@ -261,11 +257,6 @@ namespace QLogicaePlotica
                     execution_data.is_eps_output_enabled = UTILITIES.JSON_FILE_IO.get_bool({ "is_enabled", "eps_output" });
                     execution_data.is_tex_output_enabled = UTILITIES.JSON_FILE_IO.get_bool({ "is_enabled", "tex_output" });
 
-                    execution_data.outlier_removal_options.factor = UTILITIES.JSON_FILE_IO.get_double({ "outlier_removal_options", "factor" });
-                    execution_data.outlier_removal_options.threshold = UTILITIES.JSON_FILE_IO.get_double({ "outlier_removal_options", "threshold" });
-                    execution_data.outlier_removal_options.proportion = UTILITIES.JSON_FILE_IO.get_double({ "outlier_removal_options", "proportion" });
-                    execution_data.outlier_removal_options.significance_level = UTILITIES.JSON_FILE_IO.get_double({ "outlier_removal_options", "significance_level" });
-
                     std::vector<std::any> titles = UTILITIES.JSON_FILE_IO.get_array({ "suspects", "titles" });
                     std::vector<std::any> color_1s = UTILITIES.JSON_FILE_IO.get_array({ "suspects", "color_1s" });
                     std::vector<std::any> color_2s = UTILITIES.JSON_FILE_IO.get_array({ "suspects", "color_2s" });
@@ -276,8 +267,7 @@ namespace QLogicaePlotica
                     if (size_c != size_d || size_c != size_e)
                     {
                         UTILITIES.LOGGER.log_async(
-                            "RuntimePerformanceBenchmarker::_setup_file_system(): " +
-                            std::string("'suspects.titles', 'suspects.color_1s', and 'suspects.color_2s' array properties must be of equal size"),
+                            std::string("RuntimePerformanceBenchmarker::_setup_file_system(): 'suspects.titles', 'suspects.color_1s', and 'suspects.color_2s' array properties must be of equal size"),
                             QLogicaeCore::LogLevel::EXCEPTION
                         );
 
@@ -301,8 +291,8 @@ namespace QLogicaePlotica
         catch (const std::exception& exception)
         {
             UTILITIES.LOGGER.log_async(
-                "RuntimePerformanceBenchmarker::_setup_file_system(): " +
-                std::string(exception.what()),
+                std::string("RuntimePerformanceBenchmarker::_setup_file_system(): ") +
+                exception.what(),
                 QLogicaeCore::LogLevel::EXCEPTION
             );
 
@@ -391,7 +381,7 @@ namespace QLogicaePlotica
                 indicators::option::ForegroundColor{indicators::Color::white},
                 indicators::option::ShowPercentage{true},
                 indicators::option::ShowElapsedTime{true},
-                indicators::option::PrefixText{ "Collecting Results: " },
+                indicators::option::PrefixText{ "> Collecting Results: " },
                 indicators::option::ShowRemainingTime{true}
             };
 
@@ -490,14 +480,14 @@ namespace QLogicaePlotica
                 future.get();
             }
 
-            std::cout << "\n";
+            UTILITIES.CLI_IO.print_with_new_line();
 
             return true;
         }
         catch (const std::exception& exception)
         {
             UTILITIES.LOGGER.log_async(
-                std::string() + "RuntimePerformanceBenchmarker::_collect_results(): " +
+                std::string("RuntimePerformanceBenchmarker::_collect_results(): ") +
                 exception.what(),
                 QLogicaeCore::LogLevel::EXCEPTION
             );
@@ -522,7 +512,7 @@ namespace QLogicaePlotica
         catch (const std::exception& exception)
         {
             UTILITIES.LOGGER.log_async(
-                std::string() + "RuntimePerformanceBenchmarker::_transform_results(): " +
+                std::string("RuntimePerformanceBenchmarker::_transform_results(): ") +
                 exception.what(),
                 QLogicaeCore::LogLevel::EXCEPTION
             );
@@ -561,7 +551,7 @@ namespace QLogicaePlotica
                 indicators::option::ForegroundColor{indicators::Color::white},
                 indicators::option::ShowPercentage{true},
                 indicators::option::ShowElapsedTime{true},
-                indicators::option::PrefixText{ "Output Results: " },
+                indicators::option::PrefixText{ "> Output Results: " },
                 indicators::option::ShowRemainingTime{true}
             };
 
@@ -648,19 +638,32 @@ namespace QLogicaePlotica
                                 break;
                             };
 
+                            
                             matplot::show();
                         }
                     );
             }
 
-            if (execution_data.is_file_output_enabled)
+            std::string current_file_path;
+            std::vector<std::future<void>> output_futures;
+            std::unordered_map<std::string, bool> matplot_defined_outputs;
+            
+            if (execution_data.is_file_output_enabled && (
+                    execution_data.is_csv_output_enabled ||
+                    execution_data.is_json_output_enabled ||
+                    execution_data.is_svg_output_enabled ||
+                    execution_data.is_eps_output_enabled ||
+                    execution_data.is_gif_output_enabled ||
+                    execution_data.is_jpg_output_enabled ||
+                    execution_data.is_html_output_enabled ||
+                    execution_data.is_txt_output_enabled ||
+                    execution_data.is_tex_output_enabled
+                ))
             {
-                std::string current_file_path =
+                current_file_path =
                     BenchmarkerFileSystem::generate_matplot_output_directory_path(
                         execution_data.output_folder_path
                     );
-                std::vector<std::future<void>> output_futures;
-                std::unordered_map<std::string, bool> matplot_defined_outputs;
                 matplot_defined_outputs["svg"] =
                     execution_data.is_svg_output_enabled;
                 matplot_defined_outputs["eps"] =
@@ -694,115 +697,117 @@ namespace QLogicaePlotica
                         );
                     }
                 }
+            }
 
-                if (execution_data.is_csv_output_enabled)
-                {
-                    output_futures.emplace_back(
-                        std::async(std::launch::async, [=]() mutable
+            if (execution_data.is_file_output_enabled &&
+                execution_data.is_csv_output_enabled)
+            {
+                output_futures.emplace_back(
+                    std::async(std::launch::async, [=]() mutable
+                        {
+                            UTILITIES.TEXT_FILE_IO.set_file_path(
+                                BenchmarkerFileSystem::generate_matplot_output_file(
+                                    current_file_path, "csv"
+                                )
+                            );
+
+                            std::string output = "Input Size";
+                            for (const std::string suspect_name :
+                            execution_result.suspect_names)
                             {
-                                UTILITIES.TEXT_FILE_IO.set_file_path(
-                                    BenchmarkerFileSystem::generate_matplot_output_file(
-                                        current_file_path, "csv"
-                                    )
-                                );
+                                output += "," + suspect_name;
+                            }
+                            output += "\n";
 
-                                std::string output = "Input Size";
-                                for (const std::string suspect_name :
-                                execution_result.suspect_names)
+                            size_t index_a, index_b,
+                                result_input_size =
+                                execution_result.input_sizes.size(),
+                                result_suspect_size =
+                                execution_result.suspect_names.size(),
+                                result_suspect_row_size =
+                                result_suspect_size + 1;
+                            for (index_a = 0;
+                                index_a < result_input_size;
+                                ++index_a)
+                            {
+                                output +=
+                                    absl::StrCat(
+                                        execution_result.input_sizes[index_a]
+                                    );
+                                for (index_b = 0;
+                                    index_b < result_suspect_size;
+                                    ++index_b)
                                 {
-                                    output += "," + suspect_name;
+                                    output += absl::StrCat(
+                                        ",",
+                                        execution_result.durations[index_b][index_a]
+                                    );
                                 }
                                 output += "\n";
-
-                                size_t index_a, index_b,
-                                    result_input_size =
-                                    execution_result.input_sizes.size(),
-                                    result_suspect_size =
-                                    execution_result.suspect_names.size(),
-                                    result_suspect_row_size =
-                                    result_suspect_size + 1;
-                                for (index_a = 0;
-                                    index_a < result_input_size;
-                                    ++index_a)
-                                {
-                                    output +=
-                                        absl::StrCat(
-                                            execution_result.input_sizes[index_a]
-                                        );
-                                    for (index_b = 0;
-                                        index_b < result_suspect_size;
-                                        ++index_b)
-                                    {
-                                        output += absl::StrCat(
-                                            ",",
-                                            execution_result.durations[index_b][index_a]
-                                        );
-                                    }
-                                    output += "\n";
-                                }
-                                UTILITIES.TEXT_FILE_IO.write_async(output);
-                            })
-                    );
-                }
-
-                if (execution_data.is_json_output_enabled)
-                {
-                    output_futures.emplace_back(
-                        std::async(std::launch::async, [=]() mutable
-                            {
-                                UTILITIES.JSON_FILE_IO.set_file_path(
-                                    BenchmarkerFileSystem::generate_matplot_output_file(
-                                        current_file_path, "json"
-                                    )
-                                );
-
-                                std::string output = "{\n";
-                                size_t index_a, index_b, size_a, size_b, size_c, size_d;
-
-                                size_a = execution_result.suspect_names.size();
-                                size_b = size_a - 1;
-                                size_c = execution_result.input_sizes.size();
-                                size_d = size_c - 1;
-                                for (index_a = 0; index_a < size_a; ++index_a)
-                                {
-                                    output += "\t\t\"" + execution_result.suspect_names[index_a] + "\": [";
-                                    for (index_b = 0; index_b < size_c; ++index_b)
-                                    {
-                                        output += absl::StrCat(execution_result.durations[index_a][index_b]);
-
-                                        if (index_b < size_d)
-                                        {
-                                            output += ", ";
-                                        }
-                                    }
-                                    output += "]";
-                                    if (index_a < size_b)
-                                    {
-                                        output += ",";
-                                    }
-                                    output += "\n";
-                                }
-                                output += "}\n";
-
-                                UTILITIES.JSON_FILE_IO.write_async(output);
-                            })
-                    );
-                }
-
-                for (auto& output_future : output_futures)
-                {
-                    output_future.get();
-                    progress_1.set_progress(static_cast<size_t>(
-                        (100.0 * ++size_a) / size_b));
-                }
+                            }
+                            UTILITIES.TEXT_FILE_IO.write_async(output);
+                        })
+                );
             }
-            
+
+            if (execution_data.is_file_output_enabled &&
+                execution_data.is_json_output_enabled)
+            {
+                output_futures.emplace_back(
+                    std::async(std::launch::async, [=]() mutable
+                        {
+                            UTILITIES.JSON_FILE_IO.set_file_path(
+                                BenchmarkerFileSystem::generate_matplot_output_file(
+                                    current_file_path, "json"
+                                )
+                            );
+
+                            std::string output = "{\n";
+                            size_t index_a, index_b, size_a, size_b, size_c, size_d;
+
+                            size_a = execution_result.suspect_names.size();
+                            size_b = size_a - 1;
+                            size_c = execution_result.input_sizes.size();
+                            size_d = size_c - 1;
+                            for (index_a = 0; index_a < size_a; ++index_a)
+                            {
+                                output += "\t\t\"" + execution_result.suspect_names[index_a] + "\": [";
+                                for (index_b = 0; index_b < size_c; ++index_b)
+                                {
+                                    output += absl::StrCat(execution_result.durations[index_a][index_b]);
+
+                                    if (index_b < size_d)
+                                    {
+                                        output += ", ";
+                                    }
+                                }
+                                output += "]";
+                                if (index_a < size_b)
+                                {
+                                    output += ",";
+                                }
+                                output += "\n";
+                            }
+                            output += "}\n";
+
+                            UTILITIES.JSON_FILE_IO.write_async(output);
+                        })
+                );                
+            }
+
+            for (auto& output_future : output_futures)
+            {
+                output_future.get();
+                progress_1.set_progress(static_cast<size_t>(
+                    (100.0 * ++size_a) / size_b));
+            }
+
             return true;
         }
         catch (const std::exception& exception)
         {
             UTILITIES.LOGGER.log_async(
-                std::string() + "RuntimePerformanceBenchmarker::_output_results(): " +
+                std::string("RuntimePerformanceBenchmarker::_output_results(): ") +
                 exception.what(),
                 QLogicaeCore::LogLevel::EXCEPTION
             );

@@ -30,6 +30,12 @@ namespace QLogicaePlotica
     class Utilities
     {
     public:
+        const std::string PROJECT_NAME =
+            "QLogicae Plotica";
+
+        const std::string PROJECT_VERSION =
+            "1.1.0";
+        
         const std::string EXECUTED_FILE_PATH = std::filesystem::current_path()
             .string().c_str();
 
@@ -128,6 +134,8 @@ namespace QLogicaePlotica
 
         matplot::legend::general_alignment get_benchmark_legend_alignment(
             const BenchmarkerLegendAlignment&);
+        
+        std::string get_full_name();
 
         static Utilities& get_instance();
 
