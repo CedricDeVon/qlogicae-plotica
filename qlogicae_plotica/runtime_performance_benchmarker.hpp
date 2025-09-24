@@ -61,7 +61,7 @@ namespace QLogicaePlotica
         bool is_txt_output_enabled = false;
         bool is_eps_output_enabled = false;
         bool is_tex_output_enabled = false;
-        std::string output_folder_path = DEFAULT_PROJECT_ROOT_OUTPUT_PATH;
+        std::string output_folder_path = UTILITIES.QLOGICAE_DOT_QLOGICAE_PLOTICA_PATH;
         std::vector<BenchmarkerSuspectParameters> suspects;
     };
 

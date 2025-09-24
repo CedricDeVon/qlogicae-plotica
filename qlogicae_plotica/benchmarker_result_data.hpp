@@ -39,7 +39,7 @@ namespace QLogicaePlotica
         template <typename Type> void set_payload(Type&& value);
         template <typename Type> const Type& get_payload() const;
 
-    private:
+    protected:
         std::any _payload;
         size_t _input_size;
         double _end_setup_time;

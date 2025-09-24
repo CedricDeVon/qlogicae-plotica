@@ -1,5 +1,3 @@
-#pragma once
-
 #include "pch.h"
 
 #include "benchmarker_file_system.hpp"
@@ -28,7 +26,11 @@ namespace QLogicaePlotica
         }
         catch (const std::exception& exception)
         {
-            LOGGER.log_async(std::string() + "generate_root_folder(): " + exception.what(), QLogicaeCore::LogLevel::EXCEPTION);
+            UTILITIES.LOGGER.log_async(
+                std::string("BenchmarkerFileSystem::generate_root_folder(): ") +
+                exception.what(),
+                QLogicaeCore::LogLevel::EXCEPTION
+            );
 
             return "";
         }
@@ -45,13 +47,14 @@ namespace QLogicaePlotica
                 title;
             complete_matplot_output_directory_path =
                 (file_path.empty()) ?
-                DEFAULT_PROJECT_ROOT_OUTPUT_PATH +
+                UTILITIES.QLOGICAE_DOT_QLOGICAE_PLOTICA_PATH +
                 "/" +
                 complete_matplot_output_directory_path
                 :
                 file_path +
                 "/" +
                 complete_matplot_output_directory_path;
+
             if (!std::filesystem::exists(
                 complete_matplot_output_directory_path))
             {
@@ -61,13 +64,17 @@ namespace QLogicaePlotica
             complete_matplot_output_directory_path =
                 complete_matplot_output_directory_path +
                 "/" +
-                DEFAULT_CONFIGURATIONS_FILE_NAME;
+                UTILITIES.RELATIVE_PLOTICA_CONFIGURATIONS_FILE_PATH;
 
             return complete_matplot_output_directory_path;
         }
         catch (const std::exception& exception)
         {
-            LOGGER.log_async(std::string() + "generate_configuration_file_path(): " + exception.what(), QLogicaeCore::LogLevel::EXCEPTION);
+            UTILITIES.LOGGER.log_async(
+                std::string("BenchmarkerFileSystem::generate_configuration_file_path(): ") +
+                exception.what(),
+                QLogicaeCore::LogLevel::EXCEPTION
+            );
 
             return "";
         }
@@ -81,14 +88,14 @@ namespace QLogicaePlotica
         try
         {
             std::string complete_matplot_output_directory_path =
-                DEFAULT_PROJECT_BENCHMARK_OUTPUT_FOLDER +
+                UTILITIES.RELATIVE_RESULTS_PATH +
                 "/" +
-                TIME.now(
+                UTILITIES.TIME.now(
                     QLogicaeCore::TimeFormat::FULL_DASHED_TIMESTAMP
                 );
             complete_matplot_output_directory_path =
                 (file_path.empty()) ?
-                DEFAULT_PROJECT_ROOT_OUTPUT_PATH +
+                UTILITIES.QLOGICAE_DOT_QLOGICAE_PLOTICA_PATH +
                 "/" +
                 complete_matplot_output_directory_path
                 :
@@ -107,7 +114,10 @@ namespace QLogicaePlotica
         }
         catch (const std::exception& exception)
         {
-            LOGGER.log_async(std::string() + "generate_matplot_output_directory_path(): " + exception.what(), QLogicaeCore::LogLevel::EXCEPTION);
+            UTILITIES.LOGGER.log_async(std::string("BenchmarkerFileSystem::generate_matplot_output_directory_path(): ") +
+                exception.what(),
+                QLogicaeCore::LogLevel::EXCEPTION
+            );
 
             return "";
         }
@@ -122,13 +132,16 @@ namespace QLogicaePlotica
         {
             return file_path +
                 "/" +
-                DEFAULT_PROJECT_BENCHMARK_OUTPUT_FILE +
+                UTILITIES.RELATIVE_BENCHMARK_OUTPUT_PATH +
                 "." +
                 extension_name;
         }
         catch (const std::exception& exception)
         {
-            LOGGER.log_async(std::string() + "generate_matplot_output_file(): " + exception.what(), QLogicaeCore::LogLevel::EXCEPTION);
+            UTILITIES.LOGGER.log_async(std::string("BenchmarkerFileSystem::generate_matplot_output_file(): ") +
+                exception.what(),
+                QLogicaeCore::LogLevel::EXCEPTION
+            );
 
             return "";
         }

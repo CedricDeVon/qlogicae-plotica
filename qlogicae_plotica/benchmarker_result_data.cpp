@@ -1,5 +1,3 @@
-#pragma once
-
 #include "pch.h"
 
 #include "benchmarker_result_data.hpp"
@@ -52,12 +50,12 @@ namespace QLogicaePlotica
 
     void BenchmarkerResultData::set_start_execution_time()
     {
-        _start_execution_time = TIME.now();
+        _start_execution_time = UTILITIES.TIME.now();
     }
 
     void BenchmarkerResultData::set_end_execution_time()
     {
-        _end_execution_time = TIME.now();
+        _end_execution_time = UTILITIES.TIME.now();
     }
 
     double BenchmarkerResultData::get_end_setup_time() const
@@ -72,12 +70,12 @@ namespace QLogicaePlotica
 
     void BenchmarkerResultData::set_start_setup_time()
     {
-        _start_setup_time = TIME.now();
+        _start_setup_time = UTILITIES.TIME.now();
     }
 
     void BenchmarkerResultData::set_end_setup_time()
     {
-        _end_setup_time = TIME.now();
+        _end_setup_time = UTILITIES.TIME.now();
     }
 
     void BenchmarkerResultData::set_payload(const std::any& value)

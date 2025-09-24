@@ -1,7 +1,6 @@
-#pragma once
-
 #include "pch.h"
 
+#include "utilities.hpp"
 #include "qlogicae_plotica_sandbox.hpp"
 
 int main()

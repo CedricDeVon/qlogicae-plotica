@@ -5,6 +5,8 @@
 #include "utilities.hpp"
 #include "qlogicae_core.hpp"
 
+#include <filesystem>
+
 namespace QLogicaePlotica
 {
     class BenchmarkerFileSystem
