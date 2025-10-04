@@ -135,7 +135,7 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
     <Lib>
-      <AdditionalDependencies>gdi32.lib;qlogicae_core.lib</AdditionalDependencies>
+      <AdditionalDependencies>qlogicae_core.lib</AdditionalDependencies>
       <AdditionalLibraryDirectories>$(SolutionDir)$(IntDir)qlogicae_core;%(AdditionalDependencies)</AdditionalLibraryDirectories>
       <LinkTimeCodeGeneration>
       </LinkTimeCodeGeneration>
@@ -167,7 +167,7 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
     <Lib>
-      <AdditionalDependencies>gdi32.lib;qlogicae_core.lib</AdditionalDependencies>
+      <AdditionalDependencies>qlogicae_core.lib</AdditionalDependencies>
       <AdditionalLibraryDirectories>$(SolutionDir)$(IntDir)qlogicae_core;%(AdditionalDependencies)</AdditionalLibraryDirectories>
     </Lib>
   </ItemDefinitionGroup>
