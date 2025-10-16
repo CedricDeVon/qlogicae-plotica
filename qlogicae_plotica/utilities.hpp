@@ -1,32 +1,14 @@
 #pragma once
 
-#include "pch.h"
+#include "benchmarker_graph.hpp"
+#include "benchmarker_legend_alignment.hpp"
 
-#include "qlogicae_core.hpp"
+#include <matplot/matplot.h>
 
 #include <filesystem>
 
 namespace QLogicaePlotica
-{
-    enum class BenchmarkerLegendAlignment : uint8_t
-    {
-        TOP,
-        TOP_LEFT,
-        TOP_RIGHT,
-        RIGHT,
-        BOTTOM,
-        BOTTOM_LEFT,
-        BOTTOM_RIGHT,
-        LEFT,
-        CENTER
-    };
-
-    enum class BenchmarkerGraph : uint8_t
-    {
-        LINEPLOT,
-        BOXPLOT
-    };
-
+{    
     class Utilities
     {
     public:
@@ -34,10 +16,10 @@ namespace QLogicaePlotica
             "QLogicae Plotica";
 
         const std::string PROJECT_VERSION =
-            "1.1.0";
+            "1.2.0";
         
-        const std::string EXECUTED_FILE_PATH = std::filesystem::current_path()
-            .string().c_str();
+        const std::string EXECUTED_FILE_PATH =
+            std::filesystem::current_path().string().c_str();
 
         const std::string RELATIVE_QLOGICAE_PATH =
             "qlogicae";
@@ -59,7 +41,6 @@ namespace QLogicaePlotica
         
         const std::string QLOGICAE_DOT_QLOGICAE_PLOTICA_PATH =
             EXECUTED_FILE_PATH +
-            "\\" + RELATIVE_QLOGICAE_PATH +
             "\\" + RELATIVE_DOT_QLOGICAE_PATH +
             "\\" + RELATIVE_PLOTICA_PATH;
 
@@ -141,10 +122,15 @@ namespace QLogicaePlotica
 
     protected:
         Utilities() = default;
+        
         ~Utilities() = default;
+        
         Utilities(const Utilities&) = delete;
+        
         Utilities(Utilities&&) noexcept = default;
+        
         Utilities& operator=(const Utilities&) = delete;
+
         Utilities& operator=(Utilities&&) noexcept = default;
     };
 

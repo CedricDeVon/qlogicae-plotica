@@ -24,16 +24,31 @@
     <ClInclude Include="qlogicae_plotica.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="utilities.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="benchmarker_result_data.hpp">
+    <ClInclude Include="benchmarker_execution_parameters.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="benchmarker_file_system.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="benchmarker_graph.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="benchmarker_legend_alignment.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="benchmarker_result.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="benchmarker_result_data.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="benchmarker_suspect_parameters.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
     <ClInclude Include="runtime_performance_benchmarker.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="utilities.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -44,16 +59,31 @@
     <ClCompile Include="pch.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="utilities.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="benchmarker_result_data.cpp">
+    <ClCompile Include="benchmarker_execution_parameters.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="benchmarker_file_system.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="benchmarker_graph.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="benchmarker_legend_alignment.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="benchmarker_result.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="benchmarker_result_data.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="benchmarker_suspect_parameters.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
     <ClCompile Include="runtime_performance_benchmarker.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="utilities.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

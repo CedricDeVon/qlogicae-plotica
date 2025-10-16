@@ -118,7 +118,7 @@
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
       <LanguageStandard>stdcpp20</LanguageStandard>
       <LanguageStandard_C>stdc17</LanguageStandard_C>
-      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
       <AdditionalIncludeDirectories>..\..\qlogicae_core\qlogicae_core;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <AdditionalOptions>/utf-8 %(AdditionalOptions)</AdditionalOptions>
       <BasicRuntimeChecks>Default</BasicRuntimeChecks>
@@ -126,8 +126,14 @@
       <IntrinsicFunctions>false</IntrinsicFunctions>
       <FavorSizeOrSpeed>Neither</FavorSizeOrSpeed>
       <WholeProgramOptimization>false</WholeProgramOptimization>
-      <StringPooling>true</StringPooling>
+      <StringPooling>false</StringPooling>
       <InlineFunctionExpansion>Disabled</InlineFunctionExpansion>
+      <MultiProcessorCompilation>false</MultiProcessorCompilation>
+      <OmitFramePointers>false</OmitFramePointers>
+      <EnableEnhancedInstructionSet>NotSet</EnableEnhancedInstructionSet>
+      <FloatingPointModel>Default</FloatingPointModel>
+      <EnableParallelCodeGeneration>false</EnableParallelCodeGeneration>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
     </ClCompile>
     <Link>
       <SubSystem>
@@ -159,7 +165,12 @@
       <FavorSizeOrSpeed>Speed</FavorSizeOrSpeed>
       <StringPooling>true</StringPooling>
       <InlineFunctionExpansion>AnySuitable</InlineFunctionExpansion>
-      <EnableFiberSafeOptimizations>true</EnableFiberSafeOptimizations>
+      <EnableFiberSafeOptimizations>false</EnableFiberSafeOptimizations>
+      <MultiProcessorCompilation>false</MultiProcessorCompilation>
+      <OmitFramePointers>true</OmitFramePointers>
+      <EnableEnhancedInstructionSet>AdvancedVectorExtensions101</EnableEnhancedInstructionSet>
+      <FloatingPointModel>Fast</FloatingPointModel>
+      <EnableParallelCodeGeneration>true</EnableParallelCodeGeneration>
     </ClCompile>
     <Link>
       <SubSystem>
@@ -172,8 +183,13 @@
     </Lib>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="benchmarker_execution_parameters.hpp" />
     <ClInclude Include="benchmarker_file_system.hpp" />
+    <ClInclude Include="benchmarker_graph.hpp" />
+    <ClInclude Include="benchmarker_legend_alignment.hpp" />
+    <ClInclude Include="benchmarker_result.hpp" />
     <ClInclude Include="benchmarker_result_data.hpp" />
+    <ClInclude Include="benchmarker_suspect_parameters.hpp" />
     <ClInclude Include="framework.h" />
     <ClInclude Include="pch.h" />
     <ClInclude Include="qlogicae_plotica.hpp" />
@@ -181,8 +197,13 @@
     <ClInclude Include="utilities.hpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="benchmarker_execution_parameters.cpp" />
     <ClCompile Include="benchmarker_file_system.cpp" />
+    <ClCompile Include="benchmarker_graph.cpp" />
+    <ClCompile Include="benchmarker_legend_alignment.cpp" />
+    <ClCompile Include="benchmarker_result.cpp" />
     <ClCompile Include="benchmarker_result_data.cpp" />
+    <ClCompile Include="benchmarker_suspect_parameters.cpp" />
     <ClCompile Include="pch.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>

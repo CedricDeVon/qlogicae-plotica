@@ -4,7 +4,9 @@
 
 namespace QLogicaePlotica
 {
-    BenchmarkerResultData::BenchmarkerResultData(const size_t& input_size) :
+    BenchmarkerResultData::BenchmarkerResultData(
+        const size_t& input_size
+    ) :
         _input_size(input_size),
         _start_setup_time(0),
         _end_setup_time(0),
@@ -78,7 +80,9 @@ namespace QLogicaePlotica
         _end_setup_time = UTILITIES.TIME.now();
     }
 
-    void BenchmarkerResultData::set_payload(const std::any& value)
+    void BenchmarkerResultData::set_payload(
+        const std::any& value
+    )
     {
         _payload = value;
     }

@@ -68,7 +68,8 @@ namespace QLogicaePlotica
     std::vector<size_t> RuntimePerformanceBenchmarker::
         _generate_downsampled_indices(
             const size_t& total_points,
-            const size_t& maximum_points) const
+            const size_t& maximum_points
+    ) const
     {
         try
         {
@@ -106,7 +107,8 @@ namespace QLogicaePlotica
     }
 
     bool RuntimePerformanceBenchmarker::_setup_file_system(
-        BenchmarkerExecutionParameters& execution_data)
+        BenchmarkerExecutionParameters& execution_data
+    )
     {
         try
         {
@@ -302,7 +304,8 @@ namespace QLogicaePlotica
 
     bool RuntimePerformanceBenchmarker::_collect_results(
         BenchmarkerExecutionParameters& execution_data,
-        BenchmarkerResult& execution_result)
+        BenchmarkerResult& execution_result
+    )
     {
         try
         {
@@ -498,7 +501,8 @@ namespace QLogicaePlotica
 
     bool RuntimePerformanceBenchmarker::_transform_results(
         BenchmarkerExecutionParameters& execution_data,
-        BenchmarkerResult& execution_result)
+        BenchmarkerResult& execution_result
+    )
     {
         try
         {
@@ -523,7 +527,8 @@ namespace QLogicaePlotica
 
     bool RuntimePerformanceBenchmarker::_output_results(
         BenchmarkerExecutionParameters& execution_data,
-        BenchmarkerResult& execution_result)
+        BenchmarkerResult& execution_result
+    )
     {
         try
         {

@@ -2,7 +2,17 @@
 
 #include "framework.h"
 
+#include "qlogicae_core.hpp"
+
+#include <any>
+#include <mutex>
+#include <future>
+#include <vector>
+#include <string>
+#include <cstdint>
 #include <windows.h>
+#include <filesystem>
+
 #include <matplot/matplot.h>
 
 #include <absl/strings/str_cat.h>
