@@ -1,5 +1,8 @@
 #pragma once
 
+#include "qlogicae_core.hpp"
+#include "qlogicae_plotica.hpp"
+
 #include <any>
 #include <map>
 #include <mutex>

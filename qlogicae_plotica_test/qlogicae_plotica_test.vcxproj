@@ -108,14 +108,14 @@
     <ClCompile>
       <PrecompiledHeader>Use</PrecompiledHeader>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
-      <PreprocessorDefinitions>X64;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>NOMINMAX;WIN32_LEAN_AND_MEAN;HASH_LEN=32;PCRE2_CODE_UNIT_WIDTH=8;SALT_LEN=crypto_pwhash_SALTBYTES;_WIN32_WINNT=0x0601;NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
       <WarningLevel>Level3</WarningLevel>
       <DebugInformationFormat>None</DebugInformationFormat>
       <LanguageStandard>stdcpp20</LanguageStandard>
       <LanguageStandard_C>stdc17</LanguageStandard_C>
       <AdditionalIncludeDirectories>../../qlogicae_core/qlogicae_core;../qlogicae_plotica;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <AdditionalOptions>/utf-8 %(AdditionalOptions)</AdditionalOptions>
+      <AdditionalOptions>/utf-8 /favor:INTEL64 %(AdditionalOptions)</AdditionalOptions>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <FavorSizeOrSpeed>Speed</FavorSizeOrSpeed>
       <WholeProgramOptimization>true</WholeProgramOptimization>
@@ -123,14 +123,18 @@
       <InlineFunctionExpansion>AnySuitable</InlineFunctionExpansion>
       <OmitFramePointers>true</OmitFramePointers>
       <MultiProcessorCompilation>false</MultiProcessorCompilation>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <EnableParallelCodeGeneration>true</EnableParallelCodeGeneration>
+      <EnableEnhancedInstructionSet>AdvancedVectorExtensions101</EnableEnhancedInstructionSet>
+      <FloatingPointModel>Fast</FloatingPointModel>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>false</GenerateDebugInformation>
       <SubSystem>Console</SubSystem>
       <OptimizeReferences>true</OptimizeReferences>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
-      <AdditionalDependencies>qlogicae_core.lib;qlogicae_plotica.lib</AdditionalDependencies>
-      <AdditionalLibraryDirectories>..\$(IntDir)qlogicae_core;..\$(IntDir)qlogicae_plotica;%(AdditionalDependencies)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>Shlwapi.lib;Rpcrt4.lib;qlogicae_core.lib;qlogicae_plotica.lib</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(SolutionDir)$(IntDIr)qlogicae_core;$(SolutionDir)$(IntDIr)qlogicae_plotica;%(AdditionalDependencies)</AdditionalLibraryDirectories>
       <LinkTimeCodeGeneration>UseLinkTimeCodeGeneration</LinkTimeCodeGeneration>
     </Link>
   </ItemDefinitionGroup>

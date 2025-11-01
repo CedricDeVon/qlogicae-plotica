@@ -16,7 +16,7 @@ namespace QLogicaePlotica
             "QLogicae Plotica";
 
         const std::string PROJECT_VERSION =
-            "1.2.0";
+            "1.1.1";
         
         const std::string EXECUTED_FILE_PATH =
             std::filesystem::current_path().string().c_str();
@@ -41,6 +41,7 @@ namespace QLogicaePlotica
         
         const std::string QLOGICAE_DOT_QLOGICAE_PLOTICA_PATH =
             EXECUTED_FILE_PATH +
+            "\\" + RELATIVE_QLOGICAE_PATH +
             "\\" + RELATIVE_DOT_QLOGICAE_PATH +
             "\\" + RELATIVE_PLOTICA_PATH;
 

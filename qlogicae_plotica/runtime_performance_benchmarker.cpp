@@ -41,7 +41,7 @@ namespace QLogicaePlotica
         catch (const std::exception& exception)
         {
             BenchmarkerResult execution_result;
-            UTILITIES.LOGGER.log_async(
+            UTILITIES.LOGGER.log_with_timestamp(
                 std::string("RuntimePerformanceBenchmarker::execute(): ") +
                 exception.what(),
                 QLogicaeCore::LogLevel::EXCEPTION
@@ -96,7 +96,7 @@ namespace QLogicaePlotica
         }
         catch (const std::exception& exception)
         {
-            UTILITIES.LOGGER.log_async(
+            UTILITIES.LOGGER.log_with_timestamp(
                 std::string("RuntimePerformanceBenchmarker::_generate_downsampled_indices(): ") +
                 exception.what(),
                 QLogicaeCore::LogLevel::EXCEPTION
@@ -268,7 +268,7 @@ namespace QLogicaePlotica
 
                     if (size_c != size_d || size_c != size_e)
                     {
-                        UTILITIES.LOGGER.log_async(
+                        UTILITIES.LOGGER.log_with_timestamp(
                             std::string("RuntimePerformanceBenchmarker::_setup_file_system(): 'suspects.titles', 'suspects.color_1s', and 'suspects.color_2s' array properties must be of equal size"),
                             QLogicaeCore::LogLevel::EXCEPTION
                         );
@@ -292,7 +292,7 @@ namespace QLogicaePlotica
         }
         catch (const std::exception& exception)
         {
-            UTILITIES.LOGGER.log_async(
+            UTILITIES.LOGGER.log_with_timestamp(
                 std::string("RuntimePerformanceBenchmarker::_setup_file_system(): ") +
                 exception.what(),
                 QLogicaeCore::LogLevel::EXCEPTION
@@ -489,7 +489,7 @@ namespace QLogicaePlotica
         }
         catch (const std::exception& exception)
         {
-            UTILITIES.LOGGER.log_async(
+            UTILITIES.LOGGER.log_with_timestamp(
                 std::string("RuntimePerformanceBenchmarker::_collect_results(): ") +
                 exception.what(),
                 QLogicaeCore::LogLevel::EXCEPTION
@@ -515,7 +515,7 @@ namespace QLogicaePlotica
         }
         catch (const std::exception& exception)
         {
-            UTILITIES.LOGGER.log_async(
+            UTILITIES.LOGGER.log_with_timestamp(
                 std::string("RuntimePerformanceBenchmarker::_transform_results(): ") +
                 exception.what(),
                 QLogicaeCore::LogLevel::EXCEPTION
@@ -811,7 +811,7 @@ namespace QLogicaePlotica
         }
         catch (const std::exception& exception)
         {
-            UTILITIES.LOGGER.log_async(
+            UTILITIES.LOGGER.log_with_timestamp(
                 std::string("RuntimePerformanceBenchmarker::_output_results(): ") +
                 exception.what(),
                 QLogicaeCore::LogLevel::EXCEPTION
