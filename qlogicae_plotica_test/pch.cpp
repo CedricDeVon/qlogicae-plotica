@@ -1,5 +1,6 @@
-//
-// pch.cpp
-//
+#include "pch.hpp"
 
-#include "pch.h"
+namespace QLogicaePloticaTest
+{
+
+}

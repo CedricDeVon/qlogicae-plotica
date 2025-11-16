@@ -107,7 +107,7 @@
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ClCompile>
       <PrecompiledHeader>Use</PrecompiledHeader>
-      <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
+      <PrecompiledHeaderFile>pch.hpp</PrecompiledHeaderFile>
       <PreprocessorDefinitions>NOMINMAX;WIN32_LEAN_AND_MEAN;HASH_LEN=32;PCRE2_CODE_UNIT_WIDTH=8;SALT_LEN=crypto_pwhash_SALTBYTES;_WIN32_WINNT=0x0601;NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
       <WarningLevel>Level3</WarningLevel>
@@ -139,16 +139,26 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="pch.h" />
+    <ClInclude Include="pch.hpp" />
+    <ClInclude Include="qlogicae_plotica_test\includes\all.hpp" />
+    <ClInclude Include="qlogicae_plotica_test\includes\application.hpp" />
+    <ClInclude Include="qlogicae_plotica_test\includes\assembly.hpp" />
+    <ClInclude Include="qlogicae_plotica_test\includes\test.hpp" />
+    <ClInclude Include="qlogicae_plotica_test\includes\utilities.hpp" />
+    <ClInclude Include="qlogicae_plotica_test\resources\resource.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="test.cpp" />
+    <ClCompile Include="qlogicae_plotica_test\sources\all.cpp" />
+    <ClCompile Include="qlogicae_plotica_test\sources\application.cpp" />
+    <ClCompile Include="qlogicae_plotica_test\sources\assembly.cpp" />
+    <ClCompile Include="qlogicae_plotica_test\sources\test.cpp" />
     <ClCompile Include="pch.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
     </ClCompile>
+    <ClCompile Include="qlogicae_plotica_test\sources\utilities.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\qlogicae_plotica\qlogicae_plotica.vcxproj">
@@ -157,6 +167,13 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
+    <None Include="qlogicae_plotica_test\assembly\x64_masm__main.asm" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="qlogicae_plotica_test\resources\resource.rc" />
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="qlogicae\application\assets\application.ico" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

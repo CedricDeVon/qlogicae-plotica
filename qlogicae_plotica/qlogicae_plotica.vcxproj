@@ -156,7 +156,7 @@
       <PreprocessorDefinitions>NOMINMAX;WIN32_LEAN_AND_MEAN;HASH_LEN=32;PCRE2_CODE_UNIT_WIDTH=8;SALT_LEN=crypto_pwhash_SALTBYTES;_WIN32_WINNT=0x0A00;NDEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <PrecompiledHeader>Use</PrecompiledHeader>
-      <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
+      <PrecompiledHeaderFile>pch.hpp</PrecompiledHeaderFile>
       <LanguageStandard>stdcpp20</LanguageStandard>
       <LanguageStandard_C>stdc17</LanguageStandard_C>
       <DebugInformationFormat>None</DebugInformationFormat>
@@ -183,36 +183,43 @@
     </Lib>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="benchmarker_execution_parameters.hpp" />
-    <ClInclude Include="benchmarker_file_system.hpp" />
-    <ClInclude Include="benchmarker_graph.hpp" />
-    <ClInclude Include="benchmarker_legend_alignment.hpp" />
-    <ClInclude Include="benchmarker_result.hpp" />
-    <ClInclude Include="benchmarker_result_data.hpp" />
-    <ClInclude Include="benchmarker_suspect_parameters.hpp" />
+    <ClInclude Include="qlogicae_plotica\includes\all.hpp" />
+    <ClInclude Include="qlogicae_plotica\includes\application.hpp" />
+    <ClInclude Include="qlogicae_plotica\includes\assembly.hpp" />
+    <ClInclude Include="qlogicae_plotica\includes\benchmarker_execution_parameters.hpp" />
+    <ClInclude Include="qlogicae_plotica\includes\benchmarker_file_system.hpp" />
+    <ClInclude Include="qlogicae_plotica\includes\benchmarker_graph.hpp" />
+    <ClInclude Include="qlogicae_plotica\includes\benchmarker_legend_alignment.hpp" />
+    <ClInclude Include="qlogicae_plotica\includes\benchmarker_result.hpp" />
+    <ClInclude Include="qlogicae_plotica\includes\benchmarker_result_data.hpp" />
+    <ClInclude Include="qlogicae_plotica\includes\benchmarker_suspect_parameters.hpp" />
     <ClInclude Include="framework.h" />
-    <ClInclude Include="pch.h" />
-    <ClInclude Include="qlogicae_plotica.hpp" />
-    <ClInclude Include="runtime_performance_benchmarker.hpp" />
-    <ClInclude Include="utilities.hpp" />
+    <ClInclude Include="pch.hpp" />
+    <ClInclude Include="qlogicae_plotica\includes\runtime_performance_benchmarker.hpp" />
+    <ClInclude Include="qlogicae_plotica\includes\utilities.hpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="benchmarker_execution_parameters.cpp" />
-    <ClCompile Include="benchmarker_file_system.cpp" />
-    <ClCompile Include="benchmarker_graph.cpp" />
-    <ClCompile Include="benchmarker_legend_alignment.cpp" />
-    <ClCompile Include="benchmarker_result.cpp" />
-    <ClCompile Include="benchmarker_result_data.cpp" />
-    <ClCompile Include="benchmarker_suspect_parameters.cpp" />
+    <ClCompile Include="qlogicae_plotica\sources\all.cpp" />
+    <ClCompile Include="qlogicae_plotica\sources\application.cpp" />
+    <ClCompile Include="qlogicae_plotica\sources\assembly.cpp" />
+    <ClCompile Include="qlogicae_plotica\sources\benchmarker_execution_parameters.cpp" />
+    <ClCompile Include="qlogicae_plotica\sources\benchmarker_file_system.cpp" />
+    <ClCompile Include="qlogicae_plotica\sources\benchmarker_graph.cpp" />
+    <ClCompile Include="qlogicae_plotica\sources\benchmarker_legend_alignment.cpp" />
+    <ClCompile Include="qlogicae_plotica\sources\benchmarker_result.cpp" />
+    <ClCompile Include="qlogicae_plotica\sources\benchmarker_result_data.cpp" />
+    <ClCompile Include="qlogicae_plotica\sources\benchmarker_suspect_parameters.cpp" />
     <ClCompile Include="pch.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
     </ClCompile>
-    <ClCompile Include="qlogicae_plotica.cpp" />
-    <ClCompile Include="runtime_performance_benchmarker.cpp" />
-    <ClCompile Include="utilities.cpp" />
+    <ClCompile Include="qlogicae_plotica\sources\runtime_performance_benchmarker.cpp" />
+    <ClCompile Include="qlogicae_plotica\sources\utilities.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="qlogicae_plotica\assembly\x64_masm__main.asm" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
